@@ -118,6 +118,23 @@ fn normalize_answers(
     Ok(out)
 }
 
+/// Strict unit-interval check. Out-of-range or non-finite probabilities
+/// are malformed responses, not values to be silently clamped: the
+/// boundary rejects them so provider drift surfaces as an error.
+fn check_unit(value: f64, what: &str) -> Result<f64, DecisionError> {
+    if !value.is_finite() {
+        return Err(DecisionError::Malformed(format!(
+            "{what} is not finite: {value}"
+        )));
+    }
+    if !(0.0..=1.0).contains(&value) {
+        return Err(DecisionError::Malformed(format!(
+            "{what} outside [0,1]: {value}"
+        )));
+    }
+    Ok(value)
+}
+
 fn normalize_one(q: &Question, raw: &serde_json::Value) -> Result<Answer, DecisionError> {
     match q {
         Question::Noul { .. } => {
@@ -125,7 +142,17 @@ fn normalize_one(q: &Question, raw: &serde_json::Value) -> Result<Answer, Decisi
             Ok(Answer::Noul { p_yes: p })
         }
         Question::Score { levels, .. } => {
+            if levels.is_empty() {
+                return Err(DecisionError::Malformed(
+                    "score question declares no levels".into(),
+                ));
+            }
             if let Some(s) = raw.as_str() {
+                if !levels.iter().any(|l| l == s) {
+                    return Err(DecisionError::Malformed(format!(
+                        "unknown score level '{s}'"
+                    )));
+                }
                 let idx = levels.iter().position(|l| l == s).unwrap_or(0);
                 let value = if levels.len() > 1 {
                     idx as f64 / (levels.len() - 1) as f64
@@ -139,20 +166,25 @@ fn normalize_one(q: &Question, raw: &serde_json::Value) -> Result<Answer, Decisi
             }
             if let Some(obj) = raw.as_object() {
                 if let Some(level) = obj.get("level").and_then(|v| v.as_str()) {
-                    let value = obj
-                        .get("value")
-                        .and_then(|v| v.as_f64())
-                        .unwrap_or_else(|| {
+                    if !levels.iter().any(|l| l == level) {
+                        return Err(DecisionError::Malformed(format!(
+                            "unknown score level '{level}'"
+                        )));
+                    }
+                    let value = match obj.get("value").and_then(|v| v.as_f64()) {
+                        Some(v) => check_unit(v, "score value")?,
+                        None => {
                             let idx = levels.iter().position(|l| l == level).unwrap_or(0);
                             if levels.len() > 1 {
                                 idx as f64 / (levels.len() - 1) as f64
                             } else {
                                 0.0
                             }
-                        });
+                        }
+                    };
                     return Ok(Answer::Score {
                         level: level.to_string(),
-                        value: value.clamp(0.0, 1.0),
+                        value,
                     });
                 }
                 if let Some(p) = obj
@@ -161,20 +193,22 @@ fn normalize_one(q: &Question, raw: &serde_json::Value) -> Result<Answer, Decisi
                     .or_else(|| obj.get("probability"))
                     .and_then(|v| v.as_f64())
                 {
+                    let p = check_unit(p, "score probability")?;
                     let idx = ((p * levels.len() as f64).floor() as usize)
                         .min(levels.len().saturating_sub(1));
                     return Ok(Answer::Score {
                         level: levels.get(idx).cloned().unwrap_or_default(),
-                        value: p.clamp(0.0, 1.0),
+                        value: p,
                     });
                 }
             }
             if let Some(f) = raw.as_f64() {
+                let f = check_unit(f, "score value")?;
                 let idx = ((f * levels.len() as f64).floor() as usize)
                     .min(levels.len().saturating_sub(1));
                 return Ok(Answer::Score {
                     level: levels.get(idx).cloned().unwrap_or_default(),
-                    value: f.clamp(0.0, 1.0),
+                    value: f,
                 });
             }
             Err(DecisionError::Malformed(format!(
@@ -200,12 +234,28 @@ fn normalize_one(q: &Question, raw: &serde_json::Value) -> Result<Answer, Decisi
                     let probs_obj = probs_val.as_object().ok_or_else(|| {
                         DecisionError::Malformed("choice probabilities not an object".into())
                     })?;
+                    // Complete coverage: keys must match the declared choices
+                    // exactly — no missing options, no invented ones.
+                    let declared: std::collections::BTreeSet<&String> = choices.keys().collect();
+                    let returned: std::collections::BTreeSet<&String> = probs_obj.keys().collect();
+                    if returned != declared {
+                        return Err(DecisionError::Malformed(format!(
+                            "choice probability keys {returned:?} do not match declared choices {declared:?}"
+                        )));
+                    }
                     let mut probs = BTreeMap::new();
                     for (k, v) in probs_obj {
                         let p = v.as_f64().ok_or_else(|| {
                             DecisionError::Malformed(format!("non-numeric prob for '{k}'"))
                         })?;
-                        probs.insert(k.clone(), p.clamp(0.0, 1.0));
+                        probs.insert(k.clone(), check_unit(p, "choice probability")?);
+                    }
+                    // Well-formed distribution: probabilities must sum to 1.
+                    let total: f64 = probs.values().sum();
+                    if (total - 1.0).abs() > 1e-3 {
+                        return Err(DecisionError::Malformed(format!(
+                            "choice probabilities sum to {total}, not 1"
+                        )));
                     }
                     let selected = obj
                         .get("selected")
@@ -221,6 +271,11 @@ fn normalize_one(q: &Question, raw: &serde_json::Value) -> Result<Answer, Decisi
                         .ok_or_else(|| {
                             DecisionError::Malformed("choice missing selected".into())
                         })?;
+                    if !choices.contains_key(&selected) {
+                        return Err(DecisionError::Malformed(format!(
+                            "selected choice '{selected}' is not declared"
+                        )));
+                    }
                     return Ok(Answer::Choice {
                         probabilities: probs,
                         selected,
@@ -236,7 +291,7 @@ fn normalize_one(q: &Question, raw: &serde_json::Value) -> Result<Answer, Decisi
 
 fn extract_p_yes(raw: &serde_json::Value) -> Result<f64, DecisionError> {
     if let Some(f) = raw.as_f64() {
-        return Ok(f.clamp(0.0, 1.0));
+        return check_unit(f, "noul probability");
     }
     if let Some(b) = raw.as_bool() {
         return Ok(if b { 1.0 } else { 0.0 });
@@ -251,15 +306,24 @@ fn extract_p_yes(raw: &serde_json::Value) -> Result<f64, DecisionError> {
     if let Some(obj) = raw.as_object() {
         for key in ["p_yes", "pYes", "probability", "p", "score", "noul"] {
             if let Some(v) = obj.get(key).and_then(|v| v.as_f64()) {
-                return Ok(v.clamp(0.0, 1.0));
+                return check_unit(v, "noul probability");
             }
         }
-        // { yes: 0.8, no: 0.2 }
-        if let (Some(y), Some(_n)) = (
+        // { yes: 0.8, no: 0.2 }: both sides must be well-formed; they must
+        // also agree with each other.
+        if let (Some(y), Some(n)) = (
             obj.get("yes").and_then(|v| v.as_f64()),
             obj.get("no").and_then(|v| v.as_f64()),
         ) {
-            return Ok(y.clamp(0.0, 1.0));
+            let y = check_unit(y, "noul yes probability")?;
+            let n = check_unit(n, "noul no probability")?;
+            if (y + n - 1.0).abs() > 1e-3 {
+                return Err(DecisionError::Malformed(format!(
+                    "noul yes/no probabilities sum to {}, not 1",
+                    y + n
+                )));
+            }
+            return Ok(y);
         }
     }
     Err(DecisionError::Malformed(format!(
@@ -422,5 +486,109 @@ mod tests {
             }
             other => panic!("expected choice, got {other:?}"),
         }
+    }
+
+    fn noul_q(key: &str) -> (String, Question) {
+        (
+            key.into(),
+            Question::Noul {
+                instructions: "x".into(),
+            },
+        )
+    }
+
+    fn choice_q() -> (String, Question) {
+        let mut choices = BTreeMap::new();
+        choices.insert("billing".into(), "Charges".into());
+        choices.insert("technical".into(), "Bugs".into());
+        (
+            "route".into(),
+            Question::Choice {
+                instructions: "x".into(),
+                choices,
+            },
+        )
+    }
+
+    fn score_q() -> (String, Question) {
+        (
+            "sev".into(),
+            Question::Score {
+                instructions: "x".into(),
+                levels: vec!["low".into(), "high".into()],
+            },
+        )
+    }
+
+    fn questions(pairs: Vec<(String, Question)>) -> BTreeMap<String, Question> {
+        pairs.into_iter().collect()
+    }
+
+    #[test]
+    fn rejects_out_of_range_probabilities() {
+        // Noul float, Noul object key, Score float, Score object value.
+        for (q, body) in [
+            (
+                questions(vec![noul_q("a")]),
+                serde_json::json!({ "answers": { "a": 1.5 } }),
+            ),
+            (
+                questions(vec![noul_q("a")]),
+                serde_json::json!({ "answers": { "a": { "noul": -0.2 } } }),
+            ),
+            (
+                questions(vec![score_q()]),
+                serde_json::json!({ "answers": { "sev": 2.0 } }),
+            ),
+            (
+                questions(vec![score_q()]),
+                serde_json::json!({ "answers": { "sev": { "level": "low", "value": -1.0 } } }),
+            ),
+        ] {
+            assert!(normalize_answers(&q, &body).is_err(), "body: {body}");
+        }
+    }
+
+    #[test]
+    fn rejects_unknown_score_levels() {
+        for body in [
+            serde_json::json!({ "answers": { "sev": "critical" } }),
+            serde_json::json!({ "answers": { "sev": { "level": "critical", "value": 0.5 } } }),
+        ] {
+            assert!(
+                normalize_answers(&questions(vec![score_q()]), &body).is_err(),
+                "body: {body}"
+            );
+        }
+    }
+
+    #[test]
+    fn rejects_incomplete_or_incoherent_choice_distributions() {
+        // Missing option, invented option, unnormalized sum, undeclared pick.
+        for body in [
+            serde_json::json!({ "answers": { "route": {
+                "probabilities": { "billing": 1.0 }, "selected": "billing" } } }),
+            serde_json::json!({ "answers": { "route": {
+                "probabilities": { "billing": 0.5, "technical": 0.3, "other": 0.2 },
+                "selected": "billing" } } }),
+            serde_json::json!({ "answers": { "route": {
+                "probabilities": { "billing": 0.5, "technical": 0.3 },
+                "selected": "billing" } } }),
+            serde_json::json!({ "answers": { "route": {
+                "probabilities": { "billing": 0.85, "technical": 0.15 },
+                "selected": "support" } } }),
+            serde_json::json!({ "answers": { "route": "support" } }),
+        ] {
+            assert!(
+                normalize_answers(&questions(vec![choice_q()]), &body).is_err(),
+                "body: {body}"
+            );
+        }
+    }
+
+    #[test]
+    fn rejects_incoherent_yes_no_split() {
+        let body = serde_json::json!({ "answers": { "a": { "yes": 0.8, "no": 0.8 } } });
+        assert!(normalize_answers(&questions(vec![noul_q("a")]), &body).is_err());
     }
 }
