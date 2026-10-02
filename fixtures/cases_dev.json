@@ -1,0 +1,339 @@
+[
+  {
+    "id": "q01",
+    "query": "What policies affect renewal pricing?",
+    "expected_entities": [
+      "renewal-discount-policy"
+    ],
+    "expected_evidence": [
+      "document-14#document-14-section-4-2"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "q02",
+    "query": "How is the loyalty discount applied at term renewal?",
+    "expected_entities": [
+      "renewal-discount-policy"
+    ],
+    "expected_evidence": [
+      "document-14#document-14-section-4-2"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "q03",
+    "query": "Does the renewal discount combine with introductory offers?",
+    "expected_entities": [
+      "discount-exclusion-claim"
+    ],
+    "expected_evidence": [
+      "document-14#document-14-section-4-3"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "q04",
+    "query": "How long do workspace artifacts persist after plan expiry?",
+    "expected_entities": [
+      "retention-window"
+    ],
+    "expected_evidence": [
+      "document-22#document-22-section-1-1"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "q05",
+    "query": "What fee applies when reactivating after the retention window?",
+    "expected_entities": [
+      "restoration-fee",
+      "retention-window"
+    ],
+    "expected_evidence": [
+      "document-22#document-22-section-1-1",
+      "document-22#document-22-section-1-2"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "q06",
+    "query": "What uptime commitment applies to production tenants?",
+    "expected_entities": [
+      "sla-uptime",
+      "uptime-credit-claim"
+    ],
+    "expected_evidence": [
+      "document-31#document-31-section-3-1"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "q07",
+    "query": "How are uptime credits calculated?",
+    "expected_entities": [
+      "uptime-credit-claim"
+    ],
+    "expected_evidence": [
+      "document-31#document-31-section-3-1"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "q08",
+    "query": "What records exist for control-plane mutations?",
+    "expected_entities": [
+      "audit-logging"
+    ],
+    "expected_evidence": [
+      "document-40#document-40-section-5-1"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "q09",
+    "query": "How long are access event records kept?",
+    "expected_entities": [
+      "audit-logging"
+    ],
+    "expected_evidence": [
+      "document-40#document-40-section-5-1"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "q10",
+    "query": "How does workforce authentication work?",
+    "expected_entities": [
+      "sso-login"
+    ],
+    "expected_evidence": [
+      "document-41#document-41-section-2-2"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "q11",
+    "query": "How long do SSO sessions last?",
+    "expected_entities": [
+      "sso-login",
+      "session-lifetime"
+    ],
+    "expected_evidence": [
+      "document-41#document-41-section-2-2"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "q12",
+    "query": "How can administrators get tenant artifacts out?",
+    "expected_entities": [
+      "tenant-export"
+    ],
+    "expected_evidence": [
+      "document-55#document-55-section-6-1"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "q13",
+    "query": "Are bulk exports checksummed and how fast are they delivered?",
+    "expected_entities": [
+      "export-claim",
+      "tenant-export"
+    ],
+    "expected_evidence": [
+      "document-55#document-55-section-6-1"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "q14",
+    "query": "What happens to past due accounts at renewal?",
+    "expected_entities": [
+      "past-due-account",
+      "renewal-discount-policy"
+    ],
+    "expected_evidence": [
+      "document-14#document-14-section-4-2"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "q15",
+    "query": "What is the grace period for renewal payment?",
+    "expected_entities": [
+      "grace-interval",
+      "annual-plan"
+    ],
+    "expected_evidence": [
+      "document-14#document-14-section-4-2"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "q16",
+    "query": "Which plans receive the loyalty consideration?",
+    "expected_entities": [
+      "annual-plan-claim",
+      "annual-plan"
+    ],
+    "expected_evidence": [
+      "document-14#document-14-section-4-2"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "q17",
+    "query": "What does the standard tariff schedule say about monthly plans?",
+    "expected_entities": [
+      "generic-pricing-policy"
+    ],
+    "expected_evidence": [
+      "document-07#document-07-section-2-1"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "q18",
+    "query": "Can trial workspaces use the renewal discount?",
+    "expected_entities": [
+      "trial-workspace",
+      "discount-exclusion-claim"
+    ],
+    "expected_evidence": [
+      "document-14#document-14-section-4-3"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "q19",
+    "query": "What triggers the retention window?",
+    "expected_entities": [
+      "plan-expiry",
+      "retention-window"
+    ],
+    "expected_evidence": [
+      "document-22#document-22-section-1-1"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "q20",
+    "query": "How is reactivation priced relative to tariff?",
+    "expected_entities": [
+      "reactivation",
+      "restoration-fee"
+    ],
+    "expected_evidence": [
+      "document-22#document-22-section-1-2"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "q21",
+    "query": "What identity proof supports audit entries?",
+    "expected_entities": [
+      "actor-identity",
+      "audit-logging"
+    ],
+    "expected_evidence": [
+      "document-40#document-40-section-5-1"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "q22",
+    "query": "Which providers can be used for federated login?",
+    "expected_entities": [
+      "saml-provider",
+      "sso-login"
+    ],
+    "expected_evidence": [
+      "document-41#document-41-section-2-2"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "q23",
+    "query": "What integrity guarantees apply to bulk egress?",
+    "expected_entities": [
+      "checksum-export",
+      "tenant-export"
+    ],
+    "expected_evidence": [
+      "document-55#document-55-section-6-1"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "q24",
+    "query": "How are billing disputes credited?",
+    "expected_entities": [
+      "billing-dispute",
+      "credit-note"
+    ],
+    "expected_evidence": [
+      "document-31#document-31-section-3-1"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "q25",
+    "query": "What is the recurring charge basis for credits?",
+    "expected_entities": [
+      "recurring-charge",
+      "uptime-credit-claim"
+    ],
+    "expected_evidence": [
+      "document-31#document-31-section-3-1"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "q26",
+    "query": "Tell me about flibbertigibbet quantum widgets?",
+    "expected_entities": [],
+    "expected_evidence": [],
+    "max_hops": 2
+  },
+  {
+    "id": "q27",
+    "query": "What is the renewal policy on Mars colonies?",
+    "expected_entities": [],
+    "expected_evidence": [],
+    "max_hops": 2
+  },
+  {
+    "id": "q28",
+    "query": "Dead end topic 3 details?",
+    "expected_entities": [
+      "dead-end-3"
+    ],
+    "expected_evidence": [],
+    "max_hops": 2
+  },
+  {
+    "id": "q29",
+    "query": "RDP renewal terms?",
+    "expected_entities": [
+      "renewal-discount-policy"
+    ],
+    "expected_evidence": [
+      "document-14#document-14-section-4-2"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "q30",
+    "query": "Annual plan renewal and grace interval?",
+    "expected_entities": [
+      "annual-plan",
+      "grace-interval"
+    ],
+    "expected_evidence": [
+      "document-14#document-14-section-4-2"
+    ],
+    "max_hops": 3
+  }
+]

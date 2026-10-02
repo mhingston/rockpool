@@ -1,0 +1,1419 @@
+{
+  "nodes": [
+    {
+      "id": "renewal-pricing",
+      "kind": "concept",
+      "label": "Renewal pricing",
+      "description": "How recurring charges are set when a subscription term renews.",
+      "aliases": [
+        "renewal price",
+        "RDP",
+        "evergreen pricing"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "renewal-discount-policy",
+      "kind": "policy",
+      "label": "Renewal discount policy",
+      "description": "Loyalty consideration applied at term renewal for annual plans.",
+      "aliases": [
+        "RDP",
+        "loyalty discount"
+      ],
+      "evidence": [
+        {
+          "document_id": "document-14",
+          "source_id": "document-14-section-4-2",
+          "start": null,
+          "end": null,
+          "quote": "loyalty consideration at term"
+        }
+      ]
+    },
+    {
+      "id": "generic-pricing-policy",
+      "kind": "policy",
+      "label": "Generic pricing policy",
+      "description": "Standard tariff schedule for monthly plans and general billing operations.",
+      "aliases": [
+        "standard pricing"
+      ],
+      "evidence": [
+        {
+          "document_id": "document-07",
+          "source_id": "document-07-section-2-1",
+          "start": null,
+          "end": null,
+          "quote": "standard tariff schedule"
+        }
+      ]
+    },
+    {
+      "id": "document-14",
+      "kind": "document",
+      "label": "Document 14 \u2014 Billing terms",
+      "description": "Billing terms governing renewals and discounts.",
+      "aliases": [
+        "billing terms"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "document-14-section-4-2",
+      "kind": "section",
+      "label": "Document 14 \u00a74.2",
+      "description": "Evergreen subscription fee adjustments section.",
+      "aliases": [
+        "4.2"
+      ],
+      "evidence": [
+        {
+          "document_id": "document-14",
+          "source_id": "document-14-section-4-2",
+          "start": null,
+          "end": null,
+          "quote": "loyalty consideration at term"
+        }
+      ]
+    },
+    {
+      "id": "document-14-section-4-3",
+      "kind": "section",
+      "label": "Document 14 \u00a74.3",
+      "description": "Exclusions for loyalty consideration.",
+      "aliases": [],
+      "evidence": [
+        {
+          "document_id": "document-14",
+          "source_id": "document-14-section-4-3",
+          "start": null,
+          "end": null,
+          "quote": "does not combine with introductory"
+        }
+      ]
+    },
+    {
+      "id": "document-07",
+      "kind": "document",
+      "label": "Document 07 \u2014 Tariff schedule",
+      "description": "Monthly tariff text.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "document-07-section-2-1",
+      "kind": "section",
+      "label": "Document 07 \u00a72.1",
+      "description": "Standard tariff section.",
+      "aliases": [],
+      "evidence": [
+        {
+          "document_id": "document-07",
+          "source_id": "document-07-section-2-1",
+          "start": null,
+          "end": null,
+          "quote": "standard tariff schedule"
+        }
+      ]
+    },
+    {
+      "id": "company-handbook",
+      "kind": "document",
+      "label": "Company handbook",
+      "description": "General company reference. Irrelevant to most queries but heavily linked.",
+      "aliases": [
+        "handbook"
+      ],
+      "evidence": [
+        {
+          "document_id": "document-60",
+          "source_id": "document-60-handbook",
+          "start": null,
+          "end": null,
+          "quote": "Welcome to the company"
+        }
+      ]
+    },
+    {
+      "id": "billing-operations",
+      "kind": "entity",
+      "label": "Billing operations team",
+      "description": "Team owning tariff documentation.",
+      "aliases": [
+        "billing team"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "annual-plan",
+      "kind": "concept",
+      "label": "Annual plan",
+      "description": "Twelve-month subscription term.",
+      "aliases": [
+        "annual"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "grace-interval",
+      "kind": "concept",
+      "label": "Grace interval",
+      "description": "Payment window after term end.",
+      "aliases": [
+        "grace period"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "past-due-account",
+      "kind": "entity",
+      "label": "Past due account",
+      "description": "Account failing payment.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "retention-window",
+      "kind": "concept",
+      "label": "Retention window",
+      "description": "Ninety-day persistence of artifacts after plan expiry.",
+      "aliases": [
+        "retention"
+      ],
+      "evidence": [
+        {
+          "document_id": "document-22",
+          "source_id": "document-22-section-1-1",
+          "start": null,
+          "end": null,
+          "quote": "ninety days"
+        }
+      ]
+    },
+    {
+      "id": "restoration-fee",
+      "kind": "concept",
+      "label": "Restoration fee",
+      "description": "One-time fee for reactivation after retention window.",
+      "aliases": [
+        "reactivation fee"
+      ],
+      "evidence": [
+        {
+          "document_id": "document-22",
+          "source_id": "document-22-section-1-2",
+          "start": null,
+          "end": null,
+          "quote": "restoration fee"
+        }
+      ]
+    },
+    {
+      "id": "document-22",
+      "kind": "document",
+      "label": "Document 22 \u2014 Retention",
+      "description": "Retention policy doc.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "document-22-section-1-1",
+      "kind": "section",
+      "label": "Document 22 \u00a71.1",
+      "description": "Retention window text.",
+      "aliases": [],
+      "evidence": [
+        {
+          "document_id": "document-22",
+          "source_id": "document-22-section-1-1",
+          "start": null,
+          "end": null,
+          "quote": "ninety days"
+        }
+      ]
+    },
+    {
+      "id": "document-22-section-1-2",
+      "kind": "section",
+      "label": "Document 22 \u00a71.2",
+      "description": "Restoration fee text.",
+      "aliases": [],
+      "evidence": [
+        {
+          "document_id": "document-22",
+          "source_id": "document-22-section-1-2",
+          "start": null,
+          "end": null,
+          "quote": "restoration fee"
+        }
+      ]
+    },
+    {
+      "id": "sla-uptime",
+      "kind": "concept",
+      "label": "SLA uptime",
+      "description": "Production uptime commitment.",
+      "aliases": [
+        "uptime",
+        "SLA"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "uptime-credit-claim",
+      "kind": "claim",
+      "label": "Uptime credit claim",
+      "description": "Credits are a proportion of recurring charge for missed SLA.",
+      "aliases": [
+        "credits"
+      ],
+      "evidence": [
+        {
+          "document_id": "document-31",
+          "source_id": "document-31-section-3-1",
+          "start": null,
+          "end": null,
+          "quote": "Credits are"
+        }
+      ]
+    },
+    {
+      "id": "document-31-section-3-1",
+      "kind": "section",
+      "label": "Document 31 \u00a73.1",
+      "description": "Uptime commitment text.",
+      "aliases": [],
+      "evidence": [
+        {
+          "document_id": "document-31",
+          "source_id": "document-31-section-3-1",
+          "start": null,
+          "end": null,
+          "quote": "99.9% monthly uptime"
+        }
+      ]
+    },
+    {
+      "id": "audit-logging",
+      "kind": "concept",
+      "label": "Audit logging",
+      "description": "Append-only chronicle of control-plane mutations with actor identity.",
+      "aliases": [
+        "audit trail",
+        "access chronicle"
+      ],
+      "evidence": [
+        {
+          "document_id": "document-40",
+          "source_id": "document-40-section-5-1",
+          "start": null,
+          "end": null,
+          "quote": "append-only chronicle"
+        }
+      ]
+    },
+    {
+      "id": "document-40-section-5-1",
+      "kind": "section",
+      "label": "Document 40 \u00a75.1",
+      "description": "Chronicle of access events.",
+      "aliases": [],
+      "evidence": [
+        {
+          "document_id": "document-40",
+          "source_id": "document-40-section-5-1",
+          "start": null,
+          "end": null,
+          "quote": "append-only chronicle"
+        }
+      ]
+    },
+    {
+      "id": "sso-login",
+      "kind": "concept",
+      "label": "SSO login",
+      "description": "Federated identity via SAML providers.",
+      "aliases": [
+        "single sign-on",
+        "SSO"
+      ],
+      "evidence": [
+        {
+          "document_id": "document-41",
+          "source_id": "document-41-section-2-2",
+          "start": null,
+          "end": null,
+          "quote": "federated identity"
+        }
+      ]
+    },
+    {
+      "id": "document-41-section-2-2",
+      "kind": "section",
+      "label": "Document 41 \u00a72.2",
+      "description": "Federated identity text.",
+      "aliases": [],
+      "evidence": [
+        {
+          "document_id": "document-41",
+          "source_id": "document-41-section-2-2",
+          "start": null,
+          "end": null,
+          "quote": "federated identity"
+        }
+      ]
+    },
+    {
+      "id": "tenant-export",
+      "kind": "concept",
+      "label": "Tenant export",
+      "description": "Bulk egress of tenant artifacts for administrators.",
+      "aliases": [
+        "data export",
+        "bulk download"
+      ],
+      "evidence": [
+        {
+          "document_id": "document-55",
+          "source_id": "document-55-section-6-1",
+          "start": null,
+          "end": null,
+          "quote": "Bulk egress"
+        }
+      ]
+    },
+    {
+      "id": "document-55-section-6-1",
+      "kind": "section",
+      "label": "Document 55 \u00a76.1",
+      "description": "Egress text.",
+      "aliases": [],
+      "evidence": [
+        {
+          "document_id": "document-55",
+          "source_id": "document-55-section-6-1",
+          "start": null,
+          "end": null,
+          "quote": "Bulk egress"
+        }
+      ]
+    },
+    {
+      "id": "dead-end-1",
+      "kind": "concept",
+      "label": "Dead end topic 1",
+      "description": "Unconnected topic with no evidence and no outgoing edges.",
+      "aliases": [
+        "deadend1"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "dead-end-2",
+      "kind": "concept",
+      "label": "Dead end topic 2",
+      "description": "Unconnected topic with no evidence and no outgoing edges.",
+      "aliases": [
+        "deadend2"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "dead-end-3",
+      "kind": "concept",
+      "label": "Dead end topic 3",
+      "description": "Unconnected topic with no evidence and no outgoing edges.",
+      "aliases": [
+        "deadend3"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "dead-end-4",
+      "kind": "concept",
+      "label": "Dead end topic 4",
+      "description": "Unconnected topic with no evidence and no outgoing edges.",
+      "aliases": [
+        "deadend4"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "dead-end-5",
+      "kind": "concept",
+      "label": "Dead end topic 5",
+      "description": "Unconnected topic with no evidence and no outgoing edges.",
+      "aliases": [
+        "deadend5"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "regional-discount-program",
+      "kind": "policy",
+      "label": "Regional discount program",
+      "description": "Unrelated regional pricing initiative sharing the RDP alias.",
+      "aliases": [
+        "RDP"
+      ],
+      "evidence": [
+        {
+          "document_id": "document-07",
+          "source_id": "document-07-section-2-1",
+          "start": null,
+          "end": null,
+          "quote": "standard tariff schedule"
+        }
+      ]
+    },
+    {
+      "id": "invoice-schedule",
+      "kind": "concept",
+      "label": "Invoice schedule",
+      "description": "Monthly invoice cadence.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "trial-workspace",
+      "kind": "concept",
+      "label": "Trial workspace",
+      "description": "Evaluation workspace before purchase.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "introductory-offer",
+      "kind": "concept",
+      "label": "Introductory offer",
+      "description": "First-term promotional pricing.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "monthly-tariff",
+      "kind": "concept",
+      "label": "Monthly tariff",
+      "description": "Per-month list price.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "expense-policy",
+      "kind": "concept",
+      "label": "Expense policy",
+      "description": "Employee expense rules.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "holiday-calendar",
+      "kind": "concept",
+      "label": "Holiday calendar",
+      "description": "Company holidays.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "saml-provider",
+      "kind": "entity",
+      "label": "SAML provider",
+      "description": "External identity provider.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "session-lifetime",
+      "kind": "concept",
+      "label": "Session lifetime",
+      "description": "Eight-hour session duration.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "checksum-export",
+      "kind": "concept",
+      "label": "Checksum export",
+      "description": "Integrity verification for exports.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "workspace-artifact",
+      "kind": "entity",
+      "label": "Workspace artifact",
+      "description": "Stored user data object.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "plan-expiry",
+      "kind": "event",
+      "label": "Plan expiry",
+      "description": "Subscription term end event.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "reactivation",
+      "kind": "event",
+      "label": "Reactivation",
+      "description": "Subscription restart event.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "billing-dispute",
+      "kind": "event",
+      "label": "Billing dispute",
+      "description": "Charge disagreement event.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "credit-note",
+      "kind": "entity",
+      "label": "Credit note",
+      "description": "Billing credit instrument.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "recurring-charge",
+      "kind": "concept",
+      "label": "Recurring charge",
+      "description": "Periodic subscription fee.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "control-plane",
+      "kind": "entity",
+      "label": "Control plane",
+      "description": "Management API surface.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "actor-identity",
+      "kind": "entity",
+      "label": "Actor identity",
+      "description": "Authenticated principal.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "retention-claim",
+      "kind": "claim",
+      "label": "Retention claim",
+      "description": "Artifacts persist ninety days.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "export-claim",
+      "kind": "claim",
+      "label": "Export claim",
+      "description": "Exports delivered within one business day.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "sso-claim",
+      "kind": "claim",
+      "label": "SSO claim",
+      "description": "Workforce auth via federated identity.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "discount-exclusion-claim",
+      "kind": "claim",
+      "label": "Discount exclusion claim",
+      "description": "Loyalty consideration does not combine with introductory offers.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "annual-plan-claim",
+      "kind": "claim",
+      "label": "Annual plan claim",
+      "description": "Annual plans receive loyalty consideration.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "doc-71-note",
+      "kind": "section",
+      "label": "Note 71",
+      "description": "Operational note.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "doc-72-note",
+      "kind": "section",
+      "label": "Note 72",
+      "description": "Operational note.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "doc-73-note",
+      "kind": "section",
+      "label": "Note 73",
+      "description": "Operational note.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "doc-74-note",
+      "kind": "section",
+      "label": "Note 74",
+      "description": "Operational note.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "values-page",
+      "kind": "section",
+      "label": "Values page",
+      "description": "Company values section.",
+      "aliases": [],
+      "evidence": []
+    },
+    {
+      "id": "expenses-page",
+      "kind": "section",
+      "label": "Expenses page",
+      "description": "Expense guidance section.",
+      "aliases": [],
+      "evidence": []
+    }
+  ],
+  "edges": [
+    {
+      "from": "renewal-pricing",
+      "to": "renewal-discount-policy",
+      "kind": "related_to",
+      "evidence": [],
+      "confidence": 0.9
+    },
+    {
+      "from": "renewal-pricing",
+      "to": "generic-pricing-policy",
+      "kind": "related_to",
+      "evidence": [],
+      "confidence": 0.4
+    },
+    {
+      "from": "renewal-pricing",
+      "to": "annual-plan",
+      "kind": "related_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "annual-plan",
+      "to": "grace-interval",
+      "kind": "related_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "grace-interval",
+      "to": "renewal-pricing",
+      "kind": "related_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "renewal-discount-policy",
+      "to": "document-14-section-4-2",
+      "kind": "supports",
+      "evidence": [
+        {
+          "document_id": "document-14",
+          "source_id": "document-14-section-4-2",
+          "start": null,
+          "end": null,
+          "quote": "loyalty consideration at term"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "from": "document-14",
+      "to": "document-14-section-4-2",
+      "kind": "contains",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "document-14",
+      "to": "document-14-section-4-3",
+      "kind": "contains",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "renewal-discount-policy",
+      "to": "discount-exclusion-claim",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "discount-exclusion-claim",
+      "to": "document-14-section-4-3",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "generic-pricing-policy",
+      "to": "document-07-section-2-1",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "document-07",
+      "to": "document-07-section-2-1",
+      "kind": "contains",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "renewal-pricing",
+      "to": "past-due-account",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "annual-plan",
+      "to": "annual-plan-claim",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "annual-plan-claim",
+      "to": "document-14-section-4-2",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "retention-window",
+      "to": "restoration-fee",
+      "kind": "related_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "retention-window",
+      "to": "document-22-section-1-1",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "restoration-fee",
+      "to": "document-22-section-1-2",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "document-22",
+      "to": "document-22-section-1-1",
+      "kind": "contains",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "document-22",
+      "to": "document-22-section-1-2",
+      "kind": "contains",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "plan-expiry",
+      "to": "retention-window",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "reactivation",
+      "to": "restoration-fee",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "retention-claim",
+      "to": "document-22-section-1-1",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "sla-uptime",
+      "to": "uptime-credit-claim",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "uptime-credit-claim",
+      "to": "document-31-section-3-1",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "audit-logging",
+      "to": "document-40-section-5-1",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "control-plane",
+      "to": "audit-logging",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "actor-identity",
+      "to": "audit-logging",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "sso-login",
+      "to": "document-41-section-2-2",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "sso-claim",
+      "to": "document-41-section-2-2",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "saml-provider",
+      "to": "sso-login",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "session-lifetime",
+      "to": "sso-login",
+      "kind": "part_of",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "tenant-export",
+      "to": "document-55-section-6-1",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "export-claim",
+      "to": "document-55-section-6-1",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "checksum-export",
+      "to": "tenant-export",
+      "kind": "part_of",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "workspace-artifact",
+      "to": "retention-window",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "workspace-artifact",
+      "to": "tenant-export",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "recurring-charge",
+      "to": "renewal-pricing",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "monthly-tariff",
+      "to": "generic-pricing-policy",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "invoice-schedule",
+      "to": "monthly-tariff",
+      "kind": "related_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "trial-workspace",
+      "to": "introductory-offer",
+      "kind": "related_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "introductory-offer",
+      "to": "discount-exclusion-claim",
+      "kind": "contradicts",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "regional-discount-program",
+      "to": "document-07-section-2-1",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "billing-dispute",
+      "to": "credit-note",
+      "kind": "related_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "credit-note",
+      "to": "uptime-credit-claim",
+      "kind": "related_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "invoice-schedule",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "trial-workspace",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "introductory-offer",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "monthly-tariff",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "expense-policy",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "holiday-calendar",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "saml-provider",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "session-lifetime",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "checksum-export",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "workspace-artifact",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "plan-expiry",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "reactivation",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "billing-dispute",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "credit-note",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "recurring-charge",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "control-plane",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "actor-identity",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "retention-claim",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "export-claim",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "sso-claim",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "values-page",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "expenses-page",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "doc-71-note",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "doc-72-note",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "doc-73-note",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "doc-74-note",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "annual-plan",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "grace-interval",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "sla-uptime",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "tenant-export",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "sso-login",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "audit-logging",
+      "to": "company-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "invoice-schedule",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "trial-workspace",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "introductory-offer",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "monthly-tariff",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "expense-policy",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "holiday-calendar",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "saml-provider",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "session-lifetime",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "checksum-export",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "workspace-artifact",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "plan-expiry",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "reactivation",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "billing-dispute",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "credit-note",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "recurring-charge",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "control-plane",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "actor-identity",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "retention-claim",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "export-claim",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "sso-claim",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "billing-operations",
+      "to": "generic-pricing-policy",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "billing-operations",
+      "to": "company-handbook",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "document-14",
+      "to": "billing-operations",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "company-handbook",
+      "to": "expense-policy",
+      "kind": "contains",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "company-handbook",
+      "to": "holiday-calendar",
+      "kind": "contains",
+      "evidence": [],
+      "confidence": null
+    }
+  ]
+}

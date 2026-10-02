@@ -1,0 +1,89 @@
+[
+  {
+    "id": "h01",
+    "query": "What loyalty benefit applies when an annual term renews?",
+    "expected_entities": [
+      "renewal-discount-policy"
+    ],
+    "expected_evidence": [
+      "document-14#document-14-section-4-2"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "h02",
+    "query": "After expiry, how soon must we act before paying a restoration fee?",
+    "expected_entities": [
+      "retention-window",
+      "restoration-fee"
+    ],
+    "expected_evidence": [
+      "document-22#document-22-section-1-1",
+      "document-22#document-22-section-1-2"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "h03",
+    "query": "Which immutable records track who changed what and when?",
+    "expected_entities": [
+      "audit-logging"
+    ],
+    "expected_evidence": [
+      "document-40#document-40-section-5-1"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "h04",
+    "query": "What single sign-on method is available to the workforce?",
+    "expected_entities": [
+      "sso-login"
+    ],
+    "expected_evidence": [
+      "document-41#document-41-section-2-2"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "h05",
+    "query": "How quickly are administrator bulk downloads fulfilled?",
+    "expected_entities": [
+      "tenant-export"
+    ],
+    "expected_evidence": [
+      "document-55#document-55-section-6-1"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "h06",
+    "query": "Do past-due balances forfeit the evergreen adjustment?",
+    "expected_entities": [
+      "past-due-account"
+    ],
+    "expected_evidence": [
+      "document-14#document-14-section-4-2"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "h07",
+    "query": "Zzxqxv nominal nonsense query with no answer?",
+    "expected_entities": [],
+    "expected_evidence": [],
+    "max_hops": 2
+  },
+  {
+    "id": "h08",
+    "query": "What monthly list price applies per the tariff?",
+    "expected_entities": [
+      "monthly-tariff",
+      "generic-pricing-policy"
+    ],
+    "expected_evidence": [
+      "document-07#document-07-section-2-1"
+    ],
+    "max_hops": 3
+  }
+]

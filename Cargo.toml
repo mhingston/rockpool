@@ -1,0 +1,31 @@
+[package]
+name = "rockpool"
+version = "0.1.0"
+edition = "2021"
+description = "Rust-native knowledge-graph retrieval: deterministic graph priors + System One bounded semantic routing + grounded evidence"
+license = "MIT"
+
+[[bin]]
+name = "rockpool"
+path = "src/main.rs"
+
+[lib]
+name = "rockpool"
+path = "src/lib.rs"
+
+[dependencies]
+petgraph = "0.6"
+tokio = { version = "1", features = ["full"] }
+reqwest = { version = "0.12", features = ["json"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "1"
+clap = { version = "4", features = ["derive"] }
+async-trait = "0.1"
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+ordered-float = "3"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["full"] }
