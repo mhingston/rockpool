@@ -23,11 +23,8 @@ pub fn pagerank(kg: &KnowledgeGraph, damping: f32, iterations: usize) -> BTreeMa
     for id in &ids {
         let outs = kg.out_neighbours(id);
         out_degree.insert(id.clone(), outs.len());
-        for (target, _kind, _conf) in outs {
-            incoming
-                .entry(target)
-                .or_default()
-                .push((id.clone(), 1.0));
+        for (target, _kind, _conf, _egev) in outs {
+            incoming.entry(target).or_default().push((id.clone(), 1.0));
         }
     }
     for _ in 0..iterations {

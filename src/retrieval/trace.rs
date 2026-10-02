@@ -10,6 +10,10 @@ pub struct TraceEvent {
     pub graph_prior: f32,
     pub semantic: Option<f64>,
     pub decision: String,
+    /// Complete seed → candidate path, e.g. ["renewal-pricing",
+    /// "renewal-discount-policy", "document-14-section-4-2"].
+    #[serde(default)]
+    pub path: Vec<String>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -31,6 +35,14 @@ pub struct TraceStats {
     pub noul_questions: usize,
     pub evidence_items: usize,
     pub max_depth: u32,
+    /// Candidates accepted via deterministic fallback after a decision
+    /// failure/budget exhaustion (Hybrid only).
+    #[serde(default)]
+    pub fallback_accepts: usize,
+    /// Candidates explicitly degraded: no semantic answer available and the
+    /// mode forbids silent fallback (SemanticOnly).
+    #[serde(default)]
+    pub unavailable: usize,
 }
 
 impl Trace {
@@ -63,7 +75,7 @@ impl Trace {
             }
             for e in evs {
                 s.push_str(&format!(
-                    "\n  -> {}\n     edge={} pagerank={:.3} graph_prior={:.2} semantic={} decision={}\n",
+                    "\n  -> {}\n     edge={} pagerank={:.3} graph_prior={:.2} semantic={} decision={}\n     path={}\n",
                     e.to,
                     e.edge,
                     e.pagerank,
@@ -72,6 +84,7 @@ impl Trace {
                         .map(|v| format!("{v:.2}"))
                         .unwrap_or_else(|| "-".into()),
                     e.decision,
+                    e.path.join(" → "),
                 ));
             }
             s.push('\n');
@@ -80,10 +93,7 @@ impl Trace {
         for ev in &self.evidence {
             s.push_str(&format!("  {ev}\n"));
         }
-        s.push_str(&format!(
-            "\nstop_reason:\n  {}\n",
-            self.stop_reason
-        ));
+        s.push_str(&format!("\nstop_reason:\n  {}\n", self.stop_reason));
         s.push_str(&format!(
             "\nstats: examined={} expanded={} edges={} decisions={} nouls={} evidence={} depth={}\n",
             self.stats.nodes_examined,

@@ -1,0 +1,966 @@
+{
+  "nodes": [
+    {
+      "id": "large-vessel-entry",
+      "kind": "concept",
+      "label": "Large vessel harbor entry",
+      "description": "How big ships come into port.",
+      "aliases": [
+        "incoming ships",
+        "harbor entry"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "compulsory-pilotage",
+      "kind": "policy",
+      "label": "Compulsory pilotage rule",
+      "description": "Licensed pilot required past the outer bar.",
+      "aliases": [
+        "pilot requirement"
+      ],
+      "evidence": [
+        {
+          "document_id": "pilotage-ordinance",
+          "source_id": "pilotage-ordinance-s3",
+          "start": null,
+          "end": null,
+          "quote": "embark a licensed"
+        }
+      ]
+    },
+    {
+      "id": "pilotage-ordinance-s3",
+      "kind": "section",
+      "label": "Pilotage ordinance \u00a73",
+      "description": "Compulsory pilotage waters text.",
+      "aliases": [],
+      "evidence": [
+        {
+          "document_id": "pilotage-ordinance",
+          "source_id": "pilotage-ordinance-s3",
+          "start": null,
+          "end": null,
+          "quote": "embark a licensed"
+        }
+      ]
+    },
+    {
+      "id": "sunken-hazard-marking",
+      "kind": "concept",
+      "label": "Sunken hazard marking",
+      "description": "How drowned obstructions are signed for mariners.",
+      "aliases": [
+        "sunken hazards"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "wreck-buoy-protocol",
+      "kind": "policy",
+      "label": "Wreck buoy protocol",
+      "description": "Red spheres by day, occulting light by night.",
+      "aliases": [
+        "wreck marking"
+      ],
+      "evidence": [
+        {
+          "document_id": "buoyage-manual",
+          "source_id": "buoyage-manual-wreck",
+          "start": null,
+          "end": null,
+          "quote": "two vertical red spheres"
+        }
+      ]
+    },
+    {
+      "id": "buoyage-manual-wreck",
+      "kind": "section",
+      "label": "Buoyage manual (wreck marks)",
+      "description": "Wreck-marking buoy specification.",
+      "aliases": [],
+      "evidence": [
+        {
+          "document_id": "buoyage-manual",
+          "source_id": "buoyage-manual-wreck",
+          "start": null,
+          "end": null,
+          "quote": "two vertical red spheres"
+        }
+      ]
+    },
+    {
+      "id": "low-visibility-sailing",
+      "kind": "concept",
+      "label": "Low visibility sailing",
+      "description": "Moving in thick weather.",
+      "aliases": [
+        "fog sailing",
+        "restricted visibility"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "sound-signaling-rule",
+      "kind": "policy",
+      "label": "Sound signaling rule",
+      "description": "Blast patterns when visibility fails.",
+      "aliases": [
+        "foghorn rule"
+      ],
+      "evidence": [
+        {
+          "document_id": "fog-signals",
+          "source_id": "fog-signals-s2",
+          "start": null,
+          "end": null,
+          "quote": "one prolonged blast"
+        }
+      ]
+    },
+    {
+      "id": "fog-signals-s2",
+      "kind": "section",
+      "label": "Fog signals \u00a72",
+      "description": "Audible warnings text.",
+      "aliases": [],
+      "evidence": [
+        {
+          "document_id": "fog-signals",
+          "source_id": "fog-signals-s2",
+          "start": null,
+          "end": null,
+          "quote": "one prolonged blast"
+        }
+      ]
+    },
+    {
+      "id": "channel-depth",
+      "kind": "concept",
+      "label": "Channel depth",
+      "description": "How deep the dredged way is.",
+      "aliases": [
+        "draft clearance"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "datum-claim",
+      "kind": "claim",
+      "label": "Datum depth claim",
+      "description": "Eight metres at lowest astronomical tide.",
+      "aliases": [
+        "dredged depth"
+      ],
+      "evidence": [
+        {
+          "document_id": "tide-tables",
+          "source_id": "tide-tables-note",
+          "start": null,
+          "end": null,
+          "quote": "eight metres at datum"
+        }
+      ]
+    },
+    {
+      "id": "tide-tables-note",
+      "kind": "section",
+      "label": "Tide tables datum note",
+      "description": "Soundings datum text.",
+      "aliases": [],
+      "evidence": [
+        {
+          "document_id": "tide-tables",
+          "source_id": "tide-tables-note",
+          "start": null,
+          "end": null,
+          "quote": "eight metres at datum"
+        }
+      ]
+    },
+    {
+      "id": "meridian-wreck",
+      "kind": "entity",
+      "label": "Coaster Meridian",
+      "description": "Wreck in twenty-one metres.",
+      "aliases": [
+        "meridian"
+      ],
+      "evidence": [
+        {
+          "document_id": "wreck-register",
+          "source_id": "wreck-register-7",
+          "start": null,
+          "end": null,
+          "quote": "rests upright"
+        }
+      ]
+    },
+    {
+      "id": "wreck-register-7",
+      "kind": "section",
+      "label": "Wreck register entry 7",
+      "description": "Obstruction register text.",
+      "aliases": [],
+      "evidence": [
+        {
+          "document_id": "wreck-register",
+          "source_id": "wreck-register-7",
+          "start": null,
+          "end": null,
+          "quote": "rests upright"
+        }
+      ]
+    },
+    {
+      "id": "harbor-handbook",
+      "kind": "document",
+      "label": "Harbor handbook",
+      "description": "General harbor reference; heavily linked but rarely relevant.",
+      "aliases": [
+        "handbook"
+      ],
+      "evidence": [
+        {
+          "document_id": "harbor-handbook",
+          "source_id": "harbor-handbook-general",
+          "start": null,
+          "end": null,
+          "quote": "Welcome to the harbor"
+        }
+      ]
+    },
+    {
+      "id": "harbor-chart",
+      "kind": "concept",
+      "label": "Harbor chart markers",
+      "description": "Index of charted marks and hazards.",
+      "aliases": [
+        "chart index"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-01",
+      "kind": "concept",
+      "label": "Chart marker 1",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker1"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-02",
+      "kind": "concept",
+      "label": "Chart marker 2",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker2"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-03",
+      "kind": "concept",
+      "label": "Chart marker 3",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker3"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-04",
+      "kind": "concept",
+      "label": "Chart marker 4",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker4"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-05",
+      "kind": "concept",
+      "label": "Chart marker 5",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker5"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-06",
+      "kind": "concept",
+      "label": "Chart marker 6",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker6"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-07",
+      "kind": "concept",
+      "label": "Chart marker 7",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker7"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-08",
+      "kind": "concept",
+      "label": "Chart marker 8",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker8"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-09",
+      "kind": "concept",
+      "label": "Chart marker 9",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker9"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-10",
+      "kind": "concept",
+      "label": "Chart marker 10",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker10"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-11",
+      "kind": "concept",
+      "label": "Chart marker 11",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker11"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-12",
+      "kind": "concept",
+      "label": "Chart marker 12",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker12"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-13",
+      "kind": "concept",
+      "label": "Chart marker 13",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker13"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-14",
+      "kind": "concept",
+      "label": "Chart marker 14",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker14"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-15",
+      "kind": "concept",
+      "label": "Chart marker 15",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker15"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-16",
+      "kind": "concept",
+      "label": "Chart marker 16",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker16"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-17",
+      "kind": "concept",
+      "label": "Chart marker 17",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker17"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-18",
+      "kind": "concept",
+      "label": "Chart marker 18",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker18"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-19",
+      "kind": "concept",
+      "label": "Chart marker 19",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker19"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-20",
+      "kind": "concept",
+      "label": "Chart marker 20",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker20"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-21",
+      "kind": "concept",
+      "label": "Chart marker 21",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker21"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-22",
+      "kind": "concept",
+      "label": "Chart marker 22",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker22"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-23",
+      "kind": "concept",
+      "label": "Chart marker 23",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker23"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "marker-24",
+      "kind": "concept",
+      "label": "Chart marker 24",
+      "description": "Routine charted mark with no bearing on wreck inquiries.",
+      "aliases": [
+        "marker24"
+      ],
+      "evidence": []
+    }
+  ],
+  "edges": [
+    {
+      "from": "large-vessel-entry",
+      "to": "compulsory-pilotage",
+      "kind": "related_to",
+      "evidence": [],
+      "confidence": 0.9
+    },
+    {
+      "from": "compulsory-pilotage",
+      "to": "pilotage-ordinance-s3",
+      "kind": "supports",
+      "evidence": [
+        {
+          "document_id": "pilotage-ordinance",
+          "source_id": "pilotage-ordinance-s3",
+          "start": null,
+          "end": null,
+          "quote": "embark a licensed"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "from": "sunken-hazard-marking",
+      "to": "wreck-buoy-protocol",
+      "kind": "related_to",
+      "evidence": [],
+      "confidence": 0.9
+    },
+    {
+      "from": "wreck-buoy-protocol",
+      "to": "buoyage-manual-wreck",
+      "kind": "supports",
+      "evidence": [
+        {
+          "document_id": "buoyage-manual",
+          "source_id": "buoyage-manual-wreck",
+          "start": null,
+          "end": null,
+          "quote": "two vertical red spheres"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "from": "wreck-buoy-protocol",
+      "to": "meridian-wreck",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "meridian-wreck",
+      "to": "wreck-register-7",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "low-visibility-sailing",
+      "to": "sound-signaling-rule",
+      "kind": "related_to",
+      "evidence": [],
+      "confidence": 0.9
+    },
+    {
+      "from": "sound-signaling-rule",
+      "to": "fog-signals-s2",
+      "kind": "supports",
+      "evidence": [
+        {
+          "document_id": "fog-signals",
+          "source_id": "fog-signals-s2",
+          "start": null,
+          "end": null,
+          "quote": "one prolonged blast"
+        }
+      ],
+      "confidence": 0.95
+    },
+    {
+      "from": "channel-depth",
+      "to": "datum-claim",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "datum-claim",
+      "to": "tide-tables-note",
+      "kind": "supports",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "sunken-hazard-marking",
+      "to": "harbor-chart",
+      "kind": "related_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "wreck-buoy-protocol",
+      "kind": "supports",
+      "evidence": [
+        {
+          "document_id": "buoyage-manual",
+          "source_id": "buoyage-manual-wreck",
+          "start": null,
+          "end": null,
+          "quote": "two vertical red spheres"
+        }
+      ],
+      "confidence": 0.9
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-01",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-01",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-02",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-02",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-03",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-03",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-04",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-04",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-05",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-05",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-06",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-06",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-07",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-07",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-08",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-08",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-09",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-09",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-10",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-10",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-11",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-11",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-12",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-12",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-13",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-13",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-14",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-14",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-15",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-15",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-16",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-16",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-17",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-17",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-18",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-18",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-19",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-19",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-20",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-20",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-21",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-21",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-22",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-22",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-23",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-23",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "marker-24",
+      "kind": "mentions",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "marker-24",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "harbor-chart",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "large-vessel-entry",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "low-visibility-sailing",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    },
+    {
+      "from": "channel-depth",
+      "to": "harbor-handbook",
+      "kind": "refers_to",
+      "evidence": [],
+      "confidence": null
+    }
+  ]
+}

@@ -2,10 +2,10 @@ use crate::decision::client::DecisionClient;
 use crate::decision::types::{DecisionRecord, DecisionRequest, Question};
 use crate::evidence::store::EvidenceStore;
 use crate::evidence::types::Evidence;
-use crate::graph::model::EdgeKind;
+use crate::graph::model::{EdgeKind, EvidenceRef};
 use crate::graph::rank::pagerank;
 use crate::graph::store::KnowledgeGraph;
-use crate::retrieval::candidates::{graph_prior, Candidate, CandidateFilter};
+use crate::retrieval::candidates::{graph_prior, Candidate, CandidateFilter, Verdict};
 use crate::retrieval::frontier::rank_frontier;
 use crate::retrieval::policy::{RetrievalMode, Thresholds, TraversalBudgets, Weights};
 use crate::retrieval::seed::resolve_seeds;
@@ -69,21 +69,31 @@ where
         });
     }
 
-    // BFS queue of (node_id, hops_from_seed).
+    // BFS queue of (node_id, hops_from_seed), plus the complete
+    // seed → node path per visited node for provenance.
     let mut queue: VecDeque<(String, u32)> = VecDeque::new();
+    let mut node_paths: HashMap<String, Vec<String>> = HashMap::new();
     for s in &seeds {
         queue.push_back((s.node_id.clone(), 0));
         visited.insert(s.node_id.clone());
+        node_paths.insert(s.node_id.clone(), vec![s.node_id.clone()]);
     }
     stats.nodes_examined = visited.len();
 
-    // Seed evidence first.
-    collect_node_evidence(
-        kg,
+    // Seed evidence first (path = [seed itself]).
+    let seed_walks: Vec<EvidenceWalk> = seeds
+        .iter()
+        .filter_map(|s| {
+            kg.get(&s.node_id).map(|n| EvidenceWalk {
+                refs: n.evidence.clone(),
+                path: vec![s.node_id.clone()],
+                reason: "seed".into(),
+            })
+        })
+        .collect();
+    collect_evidence_walks(
         evidence_store,
-        &seeds.iter().map(|s| s.node_id.clone()).collect::<Vec<_>>(),
-        &vec![],
-        "seed",
+        &seed_walks,
         &mut evidence_pool,
         &mut seen_evidence,
         budgets,
@@ -118,7 +128,7 @@ where
         // Generate candidate neighbours with deterministic filtering.
         let neighbours = kg.out_neighbours(&current);
         let mut cands: Vec<Candidate> = vec![];
-        for (target, edge_kind, _conf) in &neighbours {
+        for (target, edge_kind, _conf, edge_evidence) in &neighbours {
             stats.edges_examined += 1;
             if visited.contains(target) {
                 continue;
@@ -135,7 +145,12 @@ where
             let ev_count = tnode.evidence.len();
             let gp = match mode {
                 RetrievalMode::SemanticOnly => 0.1,
-                _ => graph_prior(hops + 1, pr.get(target).copied().unwrap_or(0.0), *edge_kind, ev_count),
+                _ => graph_prior(
+                    hops + 1,
+                    pr.get(target).copied().unwrap_or(0.0),
+                    *edge_kind,
+                    ev_count,
+                ),
             };
             cands.push(Candidate {
                 from: current.clone(),
@@ -148,6 +163,7 @@ where
                 semantic: None,
                 frontier_score: None,
                 decision: None,
+                edge_evidence: edge_evidence.clone(),
             });
         }
         if cands.is_empty() {
@@ -166,35 +182,33 @@ where
         let use_semantic = matches!(mode, RetrievalMode::SemanticOnly | RetrievalMode::Hybrid);
         if use_semantic {
             if decision_calls >= budgets.max_decision_calls {
-                // Fallback: deterministic-only for remaining hops.
-                for c in &mut cands {
-                    c.semantic = Some(0.0);
-                    c.frontier_score = Some(score_frontier(0.0, c.graph_prior, c.hops, weights, mode));
-                    c.decision = Some("NO_DECISION_BUDGET".into());
-                }
+                // Decision budget exhausted: Hybrid genuinely falls back to
+                // deterministic thresholds; SemanticOnly degrades explicitly.
+                apply_no_semantic(&mut cands, mode);
             } else if let Some(dec) = decision {
                 // One System One request with N independent Noul questions.
                 let mut questions = BTreeMap::new();
                 for c in &cands {
                     let tnode = kg.get(&c.to).unwrap();
-                    let state_desc = format!(
-                        "candidate {} ({:?}) via {:?} from {}",
-                        tnode.label, tnode.kind, c.edge_kind, current
-                    );
-                    let _ = state_desc;
+                    let tnode_kind = format!("{:?}", tnode.kind);
+                    let current_label = kg
+                        .get(&current)
+                        .map(|n| n.label.clone())
+                        .unwrap_or_default();
+                    let description = tnode.description.clone().unwrap_or_default();
                     questions.insert(
                         c.to.clone(),
                         Question::Noul {
                             instructions: format!(
-                                "User query: \"{}\". Current node: {} ({}). Candidate: {} ({} — {}) related by {:?}. Description: {}. Could following this relationship lead to evidence needed to answer the user's query? Answer P(yes).",
-                                query,
-                                current,
-                                kg.get(&current).map(|n| n.label.clone()).unwrap_or_default(),
+                                "User query: \"{query}\". Current node: {current} ({current_label}). Candidate: {} ({tnode_label} — {tnode_kind}) related by {:?}. Description: {description}. Could following this relationship lead to evidence needed to answer the user's query? Answer P(yes).",
                                 c.to,
-                                tnode.label,
-                                format!("{:?}", tnode.kind),
                                 c.edge_kind,
-                                tnode.description.clone().unwrap_or_default(),
+                                query = query,
+                                current = current,
+                                current_label = current_label,
+                                tnode_label = tnode.label,
+                                tnode_kind = tnode_kind,
+                                description = description,
                             ),
                         },
                     );
@@ -228,46 +242,52 @@ where
                             c.frontier_score =
                                 Some(score_frontier(p, c.graph_prior, c.hops, weights, mode));
                             c.decision = Some(if p >= thresholds.accept {
-                                "ACCEPT".into()
+                                Verdict::Accept { fallback: false }
                             } else if p >= thresholds.review {
-                                "REVIEW".into()
+                                Verdict::Review
                             } else {
-                                "REJECT".into()
+                                Verdict::Reject
                             });
                         }
                     }
-                    Err(e) => {
-                        // Escalation: on decision error, fall back to deterministic priors.
-                        for c in &mut cands {
-                            c.semantic = Some(0.0);
-                            c.frontier_score =
-                                Some(score_frontier(0.0, c.graph_prior, c.hops, weights, mode));
-                            c.decision = Some(format!("ERROR_FALLBACK:{e}"));
-                        }
+                    Err(_e) => {
+                        // Decision API failure: never pretend. Hybrid falls back
+                        // to deterministic thresholds; SemanticOnly degrades.
+                        apply_no_semantic(&mut cands, mode);
                     }
                 }
             } else {
-                for c in &mut cands {
-                    c.semantic = Some(0.0);
-                    c.frontier_score = Some(score_frontier(0.0, c.graph_prior, c.hops, weights, mode));
-                    c.decision = Some("NO_CLIENT".into());
-                }
+                // No decision client configured at all: same rule as failure.
+                apply_no_semantic(&mut cands, mode);
             }
         } else {
-            // Deterministic mode: accept by graph-prior threshold (median split).
+            // Deterministic mode: accept by graph-prior threshold.
             for c in &mut cands {
-                let accept = c.graph_prior >= 0.35;
+                let accept = c.graph_prior >= DETERMINISTIC_ACCEPT;
                 c.semantic = None;
                 c.frontier_score = Some(c.graph_prior as f64);
-                c.decision = Some(if accept { "ACCEPT" } else { "REJECT" }.into());
+                c.decision = Some(if accept {
+                    Verdict::Accept { fallback: false }
+                } else {
+                    Verdict::Reject
+                });
             }
         }
 
         rank_frontier(&mut cands);
 
         // Enqueue accepted (+ secondary frontier on REVIEW if budget allows).
+        // Verdicts are first-class: only Accept/Review enqueue, and every
+        // enqueued node records its complete seed → node path.
+        let parent_path = node_paths
+            .get(&current)
+            .cloned()
+            .unwrap_or_else(|| vec![current.clone()]);
+        let mut walks: Vec<EvidenceWalk> = vec![];
         for c in &cands {
-            let dec = c.decision.clone().unwrap_or_default();
+            let verdict = c.decision.clone().unwrap_or(Verdict::Reject);
+            let mut path = parent_path.clone();
+            path.push(c.to.clone());
             trace.events.push(TraceEvent {
                 hop: hops,
                 from: c.from.clone(),
@@ -276,40 +296,55 @@ where
                 pagerank: pr.get(&c.to).copied().unwrap_or(0.0),
                 graph_prior: c.graph_prior,
                 semantic: c.semantic,
-                decision: dec.clone(),
+                decision: verdict.render().to_string(),
+                path: path.clone(),
             });
-            let accept = dec == "ACCEPT"
-                || (mode == RetrievalMode::Deterministic && dec == "ACCEPT");
-            let review = dec == "REVIEW";
-            if accept || (review && queue.len() < budgets.max_frontier_size) {
-                if visited.insert(c.to.clone()) {
-                    queue.push_back((c.to.clone(), c.hops));
-                    stats.nodes_examined = visited.len();
+            match &verdict {
+                Verdict::Accept { fallback: true } => stats.fallback_accepts += 1,
+                Verdict::Unavailable => stats.unavailable += 1,
+                _ => {}
+            }
+            let enqueue = matches!(verdict, Verdict::Accept { .. })
+                || (matches!(verdict, Verdict::Review) && queue.len() < budgets.max_frontier_size);
+            if enqueue && visited.insert(c.to.clone()) {
+                queue.push_back((c.to.clone(), c.hops));
+                node_paths.insert(c.to.clone(), path.clone());
+                stats.nodes_examined = visited.len();
+                // Node evidence + edge evidence, both carrying the full path.
+                if let Some(tnode) = kg.get(&c.to) {
+                    if !tnode.evidence.is_empty() {
+                        walks.push(EvidenceWalk {
+                            refs: tnode.evidence.clone(),
+                            path: path.clone(),
+                            reason: format!(
+                                "traversal {} --{}--> {}",
+                                c.from,
+                                edge_kind_str(c.edge_kind),
+                                c.to
+                            ),
+                        });
+                    }
+                }
+                if !c.edge_evidence.is_empty() {
+                    walks.push(EvidenceWalk {
+                        refs: c.edge_evidence.clone(),
+                        path: path.clone(),
+                        reason: format!(
+                            "edge {} --{}--> {}",
+                            c.from,
+                            edge_kind_str(c.edge_kind),
+                            c.to
+                        ),
+                    });
                 }
             }
         }
         expanded_count += 1;
         stats.nodes_expanded = expanded_count;
 
-        // Collect evidence from newly visited nodes + traversed edges.
-        let newly: Vec<String> = cands
-            .iter()
-            .filter(|c| {
-                c.decision.as_deref() == Some("ACCEPT")
-                    || c.decision.as_deref() == Some("REVIEW")
-            })
-            .map(|c| c.to.clone())
-            .collect();
-        let paths: HashMap<String, Vec<String>> = newly
-            .iter()
-            .map(|n| (n.clone(), vec![current.clone(), n.clone()]))
-            .collect();
-        collect_node_evidence(
-            kg,
+        collect_evidence_walks(
             evidence_store,
-            &newly,
-            &paths_vec(&paths),
-            "traversal",
+            &walks,
             &mut evidence_pool,
             &mut seen_evidence,
             budgets,
@@ -322,23 +357,56 @@ where
         stats.evidence_items = evidence_pool.len();
 
         // Evidence sufficiency check (bounded Noul, Rust owns the loop).
+        // The model judges the actual passages — query plus a bounded,
+        // clipped representation of each evidence item — never a bare count.
         if let Some(sdec) = sufficiency_decision {
             if !evidence_pool.is_empty() && decision_calls < budgets.max_decision_calls {
+                let shown = evidence_pool.iter().take(6).enumerate().map(|(i, e)| {
+                    let snippet: String = e
+                        .quote
+                        .as_deref()
+                        .unwrap_or(e.text.as_str())
+                        .chars()
+                        .take(400)
+                        .collect();
+                    format!(
+                        "{}. {}#{} — {}",
+                        i + 1,
+                        e.document_id,
+                        e.source_id,
+                        snippet.trim()
+                    )
+                });
+                let mut listing = shown.collect::<Vec<_>>().join("\n");
+                if evidence_pool.len() > 6 {
+                    listing.push_str(&format!("\n…and {} more.", evidence_pool.len() - 6));
+                }
                 let mut q = BTreeMap::new();
                 q.insert(
                     "sufficient".into(),
                     Question::Noul {
                         instructions: format!(
-                            "User query: \"{}\". Retrieved {} evidence items. Does the retrieved evidence contain enough information to answer the query? Answer P(yes).",
-                            query,
-                            evidence_pool.len()
+                            "User query: \"{query}\".\nEvidence passages:\n{listing}\n\nDo these passages jointly contain enough information to answer the query? Answer P(yes).",
                         ),
                     },
                 );
+                let state_evidence: Vec<serde_json::Value> = evidence_pool
+                    .iter()
+                    .take(6)
+                    .map(|e| {
+                        serde_json::json!({
+                            "document_id": e.document_id,
+                            "source_id": e.source_id,
+                            "text": e.quote.as_deref().unwrap_or(e.text.as_str())
+                                .chars().take(400).collect::<String>(),
+                        })
+                    })
+                    .collect();
                 let req = DecisionRequest {
                     state: serde_json::json!({
                         "query": query,
                         "evidence_count": evidence_pool.len(),
+                        "evidence": state_evidence,
                     }),
                     questions: q,
                     model: None,
@@ -366,13 +434,23 @@ where
             break;
         }
         if queue.is_empty() {
-            stop_reason = "frontier_exhausted".into();
+            // Explicit degradation: the semantic backend failed and the mode
+            // forbade silent fallback, and nothing was retrieved.
+            stop_reason = if evidence_pool.is_empty() && stats.unavailable > 0 {
+                "decision_degraded".into()
+            } else {
+                "frontier_exhausted".into()
+            };
             break;
         }
     }
 
     if queue.is_empty() && stop_reason == "budget_exhausted" {
-        stop_reason = "frontier_exhausted".into();
+        stop_reason = if evidence_pool.is_empty() && stats.unavailable > 0 {
+            "decision_degraded".into()
+        } else {
+            "frontier_exhausted".into()
+        };
     }
     // Cap evidence to budgets.
     evidence_pool.truncate(budgets.max_evidence_items);
@@ -389,31 +467,35 @@ where
     })
 }
 
-fn paths_vec(paths: &HashMap<String, Vec<String>>) -> Vec<(String, Vec<String>)> {
-    paths.iter().map(|(k, v)| (k.clone(), v.clone())).collect()
+/// Deterministic acceptance threshold shared by Deterministic mode and
+/// Hybrid fallback. A test parameter, not a product truth.
+pub const DETERMINISTIC_ACCEPT: f32 = 0.35;
+
+/// One evidence-collection step: refs to fetch plus the complete graph path
+/// that found them and the reason they were selected.
+struct EvidenceWalk {
+    refs: Vec<EvidenceRef>,
+    path: Vec<String>,
+    reason: String,
 }
 
-async fn collect_node_evidence<E: EvidenceStore>(
-    kg: &KnowledgeGraph,
+async fn collect_evidence_walks<E: EvidenceStore>(
     store: &E,
-    node_ids: &[String],
-    _paths: &[(String, Vec<String>)],
-    reason: &str,
+    walks: &[EvidenceWalk],
     pool: &mut Vec<Evidence>,
     seen: &mut HashSet<String>,
     budgets: &TraversalBudgets,
 ) -> anyhow::Result<()> {
-    for nid in node_ids {
-        let Some(node) = kg.get(nid) else { continue };
-        if node.evidence.is_empty() {
+    for walk in walks {
+        if walk.refs.is_empty() {
             continue;
         }
-        let fetched = store.fetch(&node.evidence).await?;
+        let fetched = store.fetch(&walk.refs).await?;
         for mut ev in fetched {
             let key = format!("{}#{}", ev.document_id, ev.source_id);
             if seen.insert(key) {
-                ev.path = vec![nid.clone()];
-                ev.reason = reason.to_string();
+                ev.path = walk.path.clone();
+                ev.reason = walk.reason.clone();
                 pool.push(ev);
                 if pool.len() >= budgets.max_evidence_items {
                     return Ok(());
@@ -427,6 +509,31 @@ async fn collect_node_evidence<E: EvidenceStore>(
         }
     }
     Ok(())
+}
+
+/// No semantic answer available (API failure, exhausted budget, or no client).
+/// Hybrid genuinely falls back to deterministic thresholds and says so;
+/// SemanticOnly degrades explicitly instead of pretending.
+fn apply_no_semantic(cands: &mut [Candidate], mode: RetrievalMode) {
+    for c in cands.iter_mut() {
+        match mode {
+            RetrievalMode::Hybrid => {
+                let accept = c.graph_prior >= DETERMINISTIC_ACCEPT;
+                c.semantic = None;
+                c.frontier_score = Some(c.graph_prior as f64);
+                c.decision = Some(if accept {
+                    Verdict::Accept { fallback: true }
+                } else {
+                    Verdict::Reject
+                });
+            }
+            _ => {
+                c.semantic = None;
+                c.frontier_score = Some(0.0);
+                c.decision = Some(Verdict::Unavailable);
+            }
+        }
+    }
 }
 
 fn score_frontier(sem: f64, graph_prior: f32, hops: u32, w: &Weights, mode: RetrievalMode) -> f64 {

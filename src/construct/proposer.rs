@@ -5,12 +5,7 @@ use async_trait::async_trait;
 
 #[async_trait]
 pub trait Proposer: Send + Sync {
-    async fn propose(
-        &self,
-        source_id: &str,
-        passage: &str,
-        kg: &KnowledgeGraph,
-    ) -> ProposalSet;
+    async fn propose(&self, source_id: &str, passage: &str, kg: &KnowledgeGraph) -> ProposalSet;
 }
 
 /// Deterministic mention proposer: for each known node whose label or alias
@@ -29,12 +24,7 @@ impl Default for MentionProposer {
 
 #[async_trait]
 impl Proposer for MentionProposer {
-    async fn propose(
-        &self,
-        source_id: &str,
-        passage: &str,
-        kg: &KnowledgeGraph,
-    ) -> ProposalSet {
+    async fn propose(&self, source_id: &str, passage: &str, kg: &KnowledgeGraph) -> ProposalSet {
         let lower = passage.to_lowercase();
         let mut relations = vec![];
         // Owning node: prefer the Document node carrying evidence for this
@@ -66,9 +56,9 @@ impl Proposer for MentionProposer {
                 }
                 let mut names = vec![node.label.clone()];
                 names.extend(node.aliases.clone());
-                let hit = names.iter().any(|nm| {
-                    nm.len() >= self.min_label_len && lower.contains(&nm.to_lowercase())
-                });
+                let hit = names
+                    .iter()
+                    .any(|nm| nm.len() >= self.min_label_len && lower.contains(&nm.to_lowercase()));
                 if hit {
                     relations.push(super::types::RelationProposal {
                         from: doc.clone(),

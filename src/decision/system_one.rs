@@ -28,7 +28,9 @@ impl DecisionEndpointConfig {
             .map_err(|_| DecisionError::Transport("DECISION_ENDPOINT not set".into()))?;
         Ok(Self {
             endpoint,
-            model: std::env::var("DECISION_MODEL").ok().filter(|s| !s.is_empty()),
+            model: std::env::var("DECISION_MODEL")
+                .ok()
+                .filter(|s| !s.is_empty()),
             api_key: std::env::var("DECISION_API_KEY")
                 .ok()
                 .filter(|s| !s.is_empty()),
@@ -89,45 +91,31 @@ fn normalize_answers(
 ) -> Result<BTreeMap<String, Answer>, DecisionError> {
     // Accept several envelope shapes:
     // { answers: {...} } | { results: {...} } | { nouls: {...} } | flat map
-    let envelope = if let Some(a) = body.get("answers") {
-        a
-    } else if let Some(r) = body.get("results") {
-        r
-    } else if body.get("nouls").is_some() {
-        body
-    } else {
-        body
-    };
-    let obj = envelope.as_object().ok_or_else(|| {
-        DecisionError::Malformed("response answers is not an object".into())
-    })?;
-    // If envelope had `nouls` wrapper, drill in.
-    let inner: &serde_json::Map<String, serde_json::Value>;
+    let envelope = body
+        .get("answers")
+        .or_else(|| body.get("results"))
+        .unwrap_or(body);
+    let obj = envelope
+        .as_object()
+        .ok_or_else(|| DecisionError::Malformed("response answers is not an object".into()))?;
+    // A `nouls` wrapper drills one level deeper; otherwise borrow directly.
     let owned;
-    if let Some(nouls) = obj.get("nouls").and_then(|v| v.as_object()) {
-        owned = nouls.clone();
-        // SAFETY: owned lives for this scope; use reference via owned.
-        // Workaround: collect below using owned.
-        let mut out = BTreeMap::new();
-        for (k, q) in questions {
-            let raw = owned.get(k).ok_or_else(|| {
-                DecisionError::Malformed(format!("missing answer for question '{k}'"))
-            })?;
-            out.insert(k.clone(), normalize_one(q, raw)?);
-        }
-        return Ok(out);
-    } else {
-        // borrow directly
-        let mut out = BTreeMap::new();
-        for (k, q) in questions {
-            let raw = obj.get(k).ok_or_else(|| {
-                DecisionError::Malformed(format!("missing answer for question '{k}'"))
-            })?;
-            out.insert(k.clone(), normalize_one(q, raw)?);
-        }
-        let _ = inner; // silence
-        return Ok(out);
+    let map: &serde_json::Map<String, serde_json::Value> =
+        match obj.get("nouls").and_then(|v| v.as_object()) {
+            Some(nouls) => {
+                owned = nouls.clone();
+                &owned
+            }
+            None => obj,
+        };
+    let mut out = BTreeMap::new();
+    for (k, q) in questions {
+        let raw = map.get(k).ok_or_else(|| {
+            DecisionError::Malformed(format!("missing answer for question '{k}'"))
+        })?;
+        out.insert(k.clone(), normalize_one(q, raw)?);
     }
+    Ok(out)
 }
 
 fn normalize_one(q: &Question, raw: &serde_json::Value) -> Result<Answer, DecisionError> {
@@ -182,8 +170,8 @@ fn normalize_one(q: &Question, raw: &serde_json::Value) -> Result<Answer, Decisi
                 }
             }
             if let Some(f) = raw.as_f64() {
-                let idx =
-                    ((f * levels.len() as f64).floor() as usize).min(levels.len().saturating_sub(1));
+                let idx = ((f * levels.len() as f64).floor() as usize)
+                    .min(levels.len().saturating_sub(1));
                 return Ok(Answer::Score {
                     level: levels.get(idx).cloned().unwrap_or_default(),
                     value: f.clamp(0.0, 1.0),
@@ -205,9 +193,7 @@ fn normalize_one(q: &Question, raw: &serde_json::Value) -> Result<Answer, Decisi
                         selected: s.to_string(),
                     });
                 }
-                return Err(DecisionError::Malformed(format!(
-                    "unknown choice '{s}'"
-                )));
+                return Err(DecisionError::Malformed(format!("unknown choice '{s}'")));
             }
             if let Some(obj) = raw.as_object() {
                 if let Some(probs_val) = obj.get("probabilities").or_else(|| obj.get("probs")) {
@@ -283,10 +269,7 @@ fn extract_p_yes(raw: &serde_json::Value) -> Result<f64, DecisionError> {
 
 #[async_trait]
 impl DecisionClient for SystemOneHttpClient {
-    async fn decide(
-        &self,
-        request: DecisionRequest,
-    ) -> Result<DecisionResponse, DecisionError> {
+    async fn decide(&self, request: DecisionRequest) -> Result<DecisionResponse, DecisionError> {
         // Model resolution: explicit request model wins, else configured default.
         // Generic endpoints receive NO injected model.
         let model = request.model.clone().or_else(|| self.config.model.clone());
@@ -303,9 +286,15 @@ impl DecisionClient for SystemOneHttpClient {
         if let Some(key) = &self.config.api_key {
             rb = rb.bearer_auth(key);
         }
-        let resp = rb.send().await.map_err(|e| DecisionError::Transport(e.to_string()))?;
+        let resp = rb
+            .send()
+            .await
+            .map_err(|e| DecisionError::Transport(e.to_string()))?;
         let status = resp.status();
-        let text = resp.text().await.map_err(|e| DecisionError::Transport(e.to_string()))?;
+        let text = resp
+            .text()
+            .await
+            .map_err(|e| DecisionError::Transport(e.to_string()))?;
         if !status.is_success() {
             return Err(DecisionError::Transport(format!("HTTP {status}: {text}")));
         }
@@ -372,5 +361,66 @@ mod tests {
         );
         let body = serde_json::json!({ "answers": {} });
         assert!(normalize_answers(&q, &body).is_err());
+    }
+
+    /// Von-style response shape (jev-cli PR #13 compatibility fixture):
+    /// `{model, answers: {q: {type: "noul", noul: p}}, usage}`.
+    #[test]
+    fn normalize_von_style_noul() {
+        let mut q = BTreeMap::new();
+        q.insert(
+            "urgent".into(),
+            Question::Noul {
+                instructions: "x".into(),
+            },
+        );
+        let body = serde_json::json!({
+            "model": "von-latest",
+            "answers": { "urgent": { "type": "noul", "noul": 0.8 } },
+            "usage": { "input_tokens": 8, "output_tokens": 1 },
+        });
+        let out = normalize_answers(&q, &body).unwrap();
+        assert_eq!(out["urgent"], Answer::Noul { p_yes: 0.8 });
+    }
+
+    /// Decider-style response shape (jev-cli PR #13 compatibility fixture):
+    /// `{model, answers: {q: {type: "choice", choice, confidence,
+    /// probabilities}}, usage}` — no injected model, no auth in request.
+    #[test]
+    fn normalize_decider_style_choice() {
+        let mut choices = BTreeMap::new();
+        choices.insert("billing".into(), "Charges".into());
+        choices.insert("technical".into(), "Bugs".into());
+        let mut q = BTreeMap::new();
+        q.insert(
+            "route".into(),
+            Question::Choice {
+                instructions: "x".into(),
+                choices,
+            },
+        );
+        let body = serde_json::json!({
+            "model": "decider",
+            "answers": {
+                "route": {
+                    "type": "choice",
+                    "choice": "billing",
+                    "confidence": 0.7,
+                    "probabilities": { "billing": 0.85, "technical": 0.15 },
+                },
+            },
+            "usage": { "input_tokens": 10, "output_tokens": 0 },
+        });
+        let out = normalize_answers(&q, &body).unwrap();
+        match &out["route"] {
+            Answer::Choice {
+                selected,
+                probabilities,
+            } => {
+                assert_eq!(selected, "billing");
+                assert_eq!(probabilities["billing"], 0.85);
+            }
+            other => panic!("expected choice, got {other:?}"),
+        }
     }
 }

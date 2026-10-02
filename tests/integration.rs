@@ -1,7 +1,7 @@
-use rockpool::answer::{AnswerRequest, ExtractiveAnswerClient};
 use rockpool::answer::client::AnswerClient;
-use rockpool::construct::{apply_proposals, ConstructionPolicy};
+use rockpool::answer::{AnswerRequest, ExtractiveAnswerClient};
 use rockpool::construct::types::{EntityProposal, ProposalSet, RelationProposal};
+use rockpool::construct::{apply_proposals, ConstructionPolicy};
 use rockpool::decision::fixture::FixtureDecisionClient;
 use rockpool::decision::types::DecisionRecord;
 use rockpool::evidence::store::MemoryEvidenceStore;
@@ -366,4 +366,98 @@ async fn construction_budget_caps_validations() {
         .rejected
         .iter()
         .any(|r| r.reason == "validation_budget_exhausted"));
+}
+
+struct FailClient;
+
+#[async_trait::async_trait]
+impl rockpool::decision::client::DecisionClient for FailClient {
+    async fn decide(
+        &self,
+        _req: rockpool::decision::types::DecisionRequest,
+    ) -> Result<rockpool::decision::types::DecisionResponse, rockpool::decision::types::DecisionError>
+    {
+        Err(rockpool::decision::types::DecisionError::Transport(
+            "simulated outage".into(),
+        ))
+    }
+}
+
+#[tokio::test]
+async fn hybrid_falls_back_to_deterministic_thresholds() {
+    let kg = tiny_graph();
+    let store = tiny_store();
+    let fail = FailClient;
+    let out = rockpool::retrieval::traversal::retrieve(
+        &kg,
+        &store,
+        Some(&fail),
+        Some(&fail),
+        "Concept A",
+        rockpool::retrieval::policy::RetrievalMode::Hybrid,
+        &rockpool::retrieval::policy::TraversalBudgets::default(),
+        &rockpool::retrieval::policy::Thresholds::default(),
+        &rockpool::retrieval::policy::Weights::default(),
+        &rockpool::retrieval::candidates::CandidateFilter::default(),
+    )
+    .await
+    .unwrap();
+    // Fallback is real: deterministic accepts enqueue and evidence is found.
+    assert!(out.trace.stats.fallback_accepts > 0);
+    assert!(out.evidence.iter().any(|e| e.source_id == "sec-1"));
+    assert!(out
+        .trace
+        .events
+        .iter()
+        .any(|e| e.decision == "ACCEPT(fallback)"));
+    // Provenance: evidence carries the seed → fetch path (policy-b's own
+    // evidence ref resolves sec-1 one hop earlier than the sec-1 node walk),
+    // and trace events preserve the complete per-candidate path.
+    let ev = out
+        .evidence
+        .iter()
+        .find(|e| e.source_id == "sec-1")
+        .unwrap();
+    assert_eq!(ev.path.first().unwrap(), "concept-a");
+    // The fetch happens at policy-b: its own evidence refs resolve the sec-1
+    // source, so the walk ends there rather than at the sec-1 node.
+    assert_eq!(
+        ev.path,
+        vec!["concept-a".to_string(), "policy-b".to_string()]
+    );
+    let sec_event = out.trace.events.iter().find(|e| e.to == "sec-1").unwrap();
+    assert_eq!(
+        sec_event.path,
+        vec![
+            "concept-a".to_string(),
+            "policy-b".to_string(),
+            "sec-1".to_string()
+        ]
+    );
+}
+
+#[tokio::test]
+async fn semantic_only_degrades_explicitly() {
+    let kg = tiny_graph();
+    let store = tiny_store();
+    let fail = FailClient;
+    let out = rockpool::retrieval::traversal::retrieve(
+        &kg,
+        &store,
+        Some(&fail),
+        Some(&fail),
+        "Concept A",
+        rockpool::retrieval::policy::RetrievalMode::SemanticOnly,
+        &rockpool::retrieval::policy::TraversalBudgets::default(),
+        &rockpool::retrieval::policy::Thresholds::default(),
+        &rockpool::retrieval::policy::Weights::default(),
+        &rockpool::retrieval::candidates::CandidateFilter::default(),
+    )
+    .await
+    .unwrap();
+    // Nothing enqueued on pretended semantics: explicit degradation.
+    assert!(out.trace.stats.unavailable > 0);
+    assert!(out.evidence.is_empty());
+    assert_eq!(out.trace.stop_reason, "decision_degraded");
+    assert!(out.trace.events.iter().all(|e| e.decision == "UNAVAILABLE"));
 }

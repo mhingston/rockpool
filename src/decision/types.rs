@@ -15,7 +15,9 @@ pub enum DecisionError {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum Question {
-    Noul { instructions: String },
+    Noul {
+        instructions: String,
+    },
     Choice {
         instructions: String,
         choices: BTreeMap<String, String>,
@@ -37,12 +39,17 @@ pub struct DecisionRequest {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum Answer {
-    Noul { p_yes: f64 },
+    Noul {
+        p_yes: f64,
+    },
     Choice {
         probabilities: BTreeMap<String, f64>,
         selected: String,
     },
-    Score { level: String, value: f64 },
+    Score {
+        level: String,
+        value: f64,
+    },
 }
 
 impl Answer {
@@ -51,9 +58,11 @@ impl Answer {
     pub fn relevance(&self) -> f64 {
         match self {
             Answer::Noul { p_yes } => p_yes.clamp(0.0, 1.0),
-            Answer::Choice { probabilities, .. } => {
-                probabilities.values().cloned().fold(0.0, f64::max).clamp(0.0, 1.0)
-            }
+            Answer::Choice { probabilities, .. } => probabilities
+                .values()
+                .cloned()
+                .fold(0.0, f64::max)
+                .clamp(0.0, 1.0),
             Answer::Score { value, .. } => value.clamp(0.0, 1.0),
         }
     }

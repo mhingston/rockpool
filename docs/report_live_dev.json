@@ -2,17 +2,58 @@
   "lexical": {
     "n": 30,
     "mean_evidence_recall": 0.9666666666666667,
-    "mean_evidence_precision": 0.24777777777777785,
+    "mean_evidence_precision": 0.43333333333333324,
     "mean_entity_recall": 0.8166666666666667,
-    "mean_nodes_examined": 3.933333333333333,
+    "mean_nodes_examined": 2.6666666666666665,
     "mean_nodes_expanded": 0.0,
     "mean_decision_calls": 0.0,
     "mean_nouls": 0.0,
-    "mean_latency_ms": 4.533333333333333,
+    "mean_latency_ms": 4.6,
     "stop_reasons": {
       "lexical_topk": 30
     }
   },
+  "bm25_top5": {
+    "n": 30,
+    "mean_evidence_recall": 0.9666666666666667,
+    "mean_evidence_precision": 0.23500000000000007,
+    "mean_entity_recall": 0.0,
+    "mean_nodes_examined": 3.966666666666667,
+    "mean_nodes_expanded": 0.0,
+    "mean_decision_calls": 0.0,
+    "mean_nouls": 0.0,
+    "mean_latency_ms": 18.566666666666666,
+    "stop_reasons": {
+      "bm25_top5": 30
+    }
+  },
+  "bm25_curve": [
+    {
+      "k": 1,
+      "recall": 0.8833333333333333,
+      "precision": 0.8
+    },
+    {
+      "k": 3,
+      "recall": 0.9666666666666667,
+      "precision": 0.3222222222222222
+    },
+    {
+      "k": 5,
+      "recall": 0.9666666666666667,
+      "precision": 0.23500000000000007
+    },
+    {
+      "k": 10,
+      "recall": 0.9666666666666667,
+      "precision": 0.176984126984127
+    },
+    {
+      "k": 20,
+      "recall": 0.9666666666666667,
+      "precision": 0.17300865800865803
+    }
+  ],
   "deterministic": {
     "n": 30,
     "mean_evidence_recall": 1.0,
@@ -22,7 +63,7 @@
     "mean_nodes_expanded": 3.7333333333333334,
     "mean_decision_calls": 0.0,
     "mean_nouls": 0.0,
-    "mean_latency_ms": 32.733333333333334,
+    "mean_latency_ms": 33.96666666666667,
     "stop_reasons": {
       "frontier_exhausted": 29,
       "no_seeds": 1
@@ -31,30 +72,32 @@
   "semantic": {
     "n": 30,
     "mean_evidence_recall": 1.0,
-    "mean_evidence_precision": 0.5472222222222222,
+    "mean_evidence_precision": 0.6111111111111112,
     "mean_entity_recall": 0.85,
-    "mean_nodes_examined": 5.233333333333333,
-    "mean_nodes_expanded": 3.066666666666667,
-    "mean_decision_calls": 5.8,
-    "mean_nouls": 8.1,
-    "mean_latency_ms": 1333.7333333333333,
+    "mean_nodes_examined": 4.666666666666667,
+    "mean_nodes_expanded": 2.566666666666667,
+    "mean_decision_calls": 4.8,
+    "mean_nouls": 6.733333333333333,
+    "mean_latency_ms": 1095.9333333333334,
     "stop_reasons": {
-      "frontier_exhausted": 29,
+      "evidence_sufficient": 5,
+      "frontier_exhausted": 24,
       "no_seeds": 1
     }
   },
   "hybrid": {
     "n": 30,
     "mean_evidence_recall": 1.0,
-    "mean_evidence_precision": 0.5583333333333333,
+    "mean_evidence_precision": 0.5722222222222222,
     "mean_entity_recall": 0.85,
-    "mean_nodes_examined": 5.166666666666667,
-    "mean_nodes_expanded": 2.933333333333333,
-    "mean_decision_calls": 5.566666666666666,
-    "mean_nouls": 7.833333333333333,
-    "mean_latency_ms": 1303.7,
+    "mean_nodes_examined": 5.066666666666666,
+    "mean_nodes_expanded": 2.6333333333333333,
+    "mean_decision_calls": 4.933333333333334,
+    "mean_nouls": 6.933333333333334,
+    "mean_latency_ms": 1123.3,
     "stop_reasons": {
-      "frontier_exhausted": 29,
+      "evidence_sufficient": 5,
+      "frontier_exhausted": 24,
       "no_seeds": 1
     }
   },
@@ -77,14 +120,14 @@
     {
       "case_id": "q02",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.2,
+      "evidence_precision": 0.3333333333333333,
       "entity_recall": 1.0,
-      "nodes_examined": 5,
+      "nodes_examined": 3,
       "nodes_expanded": 0,
       "edges_examined": 0,
       "decision_calls": 0,
       "noul_questions": 0,
-      "evidence_items": 5,
+      "evidence_items": 3,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
       "latency_ms": 5
@@ -92,14 +135,14 @@
     {
       "case_id": "q03",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.2,
+      "evidence_precision": 0.3333333333333333,
       "entity_recall": 1.0,
-      "nodes_examined": 5,
+      "nodes_examined": 3,
       "nodes_expanded": 0,
       "edges_examined": 0,
       "decision_calls": 0,
       "noul_questions": 0,
-      "evidence_items": 5,
+      "evidence_items": 3,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
       "latency_ms": 5
@@ -122,14 +165,14 @@
     {
       "case_id": "q05",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.4,
+      "evidence_precision": 1.0,
       "entity_recall": 1.0,
-      "nodes_examined": 5,
+      "nodes_examined": 2,
       "nodes_expanded": 0,
       "edges_examined": 0,
       "decision_calls": 0,
       "noul_questions": 0,
-      "evidence_items": 5,
+      "evidence_items": 2,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
       "latency_ms": 5
@@ -137,14 +180,14 @@
     {
       "case_id": "q06",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.3333333333333333,
+      "evidence_precision": 0.5,
       "entity_recall": 0.5,
-      "nodes_examined": 3,
+      "nodes_examined": 2,
       "nodes_expanded": 0,
       "edges_examined": 0,
       "decision_calls": 0,
       "noul_questions": 0,
-      "evidence_items": 3,
+      "evidence_items": 2,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
       "latency_ms": 5
@@ -152,14 +195,14 @@
     {
       "case_id": "q07",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.3333333333333333,
+      "evidence_precision": 1.0,
       "entity_recall": 1.0,
-      "nodes_examined": 3,
+      "nodes_examined": 1,
       "nodes_expanded": 0,
       "edges_examined": 0,
       "decision_calls": 0,
       "noul_questions": 0,
-      "evidence_items": 3,
+      "evidence_items": 1,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
       "latency_ms": 4
@@ -167,14 +210,14 @@
     {
       "case_id": "q08",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.2,
+      "evidence_precision": 1.0,
       "entity_recall": 1.0,
-      "nodes_examined": 5,
+      "nodes_examined": 1,
       "nodes_expanded": 0,
       "edges_examined": 0,
       "decision_calls": 0,
       "noul_questions": 0,
-      "evidence_items": 5,
+      "evidence_items": 1,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
       "latency_ms": 5
@@ -182,14 +225,14 @@
     {
       "case_id": "q09",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.25,
+      "evidence_precision": 0.5,
       "entity_recall": 0.0,
-      "nodes_examined": 4,
+      "nodes_examined": 2,
       "nodes_expanded": 0,
       "edges_examined": 0,
       "decision_calls": 0,
       "noul_questions": 0,
-      "evidence_items": 4,
+      "evidence_items": 2,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
       "latency_ms": 5
@@ -207,19 +250,19 @@
       "evidence_items": 3,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
-      "latency_ms": 5
+      "latency_ms": 4
     },
     {
       "case_id": "q11",
-      "evidence_recall": 0.0,
-      "evidence_precision": 0.0,
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.5,
       "entity_recall": 0.5,
-      "nodes_examined": 1,
+      "nodes_examined": 2,
       "nodes_expanded": 0,
       "edges_examined": 0,
       "decision_calls": 0,
       "noul_questions": 0,
-      "evidence_items": 1,
+      "evidence_items": 2,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
       "latency_ms": 4
@@ -227,14 +270,14 @@
     {
       "case_id": "q12",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.2,
+      "evidence_precision": 0.3333333333333333,
       "entity_recall": 1.0,
-      "nodes_examined": 5,
+      "nodes_examined": 3,
       "nodes_expanded": 0,
       "edges_examined": 0,
       "decision_calls": 0,
       "noul_questions": 0,
-      "evidence_items": 5,
+      "evidence_items": 3,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
       "latency_ms": 4
@@ -242,14 +285,14 @@
     {
       "case_id": "q13",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.2,
+      "evidence_precision": 1.0,
       "entity_recall": 1.0,
-      "nodes_examined": 5,
+      "nodes_examined": 1,
       "nodes_expanded": 0,
       "edges_examined": 0,
       "decision_calls": 0,
       "noul_questions": 0,
-      "evidence_items": 5,
+      "evidence_items": 1,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
       "latency_ms": 5
@@ -272,17 +315,17 @@
     {
       "case_id": "q15",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.2,
+      "evidence_precision": 0.3333333333333333,
       "entity_recall": 0.5,
-      "nodes_examined": 5,
+      "nodes_examined": 3,
       "nodes_expanded": 0,
       "edges_examined": 0,
       "decision_calls": 0,
       "noul_questions": 0,
-      "evidence_items": 5,
+      "evidence_items": 3,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
-      "latency_ms": 5
+      "latency_ms": 4
     },
     {
       "case_id": "q16",
@@ -297,7 +340,7 @@
       "evidence_items": 5,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
-      "latency_ms": 4
+      "latency_ms": 5
     },
     {
       "case_id": "q17",
@@ -317,14 +360,14 @@
     {
       "case_id": "q18",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.2,
+      "evidence_precision": 0.25,
       "entity_recall": 1.0,
-      "nodes_examined": 5,
+      "nodes_examined": 4,
       "nodes_expanded": 0,
       "edges_examined": 0,
       "decision_calls": 0,
       "noul_questions": 0,
-      "evidence_items": 5,
+      "evidence_items": 4,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
       "latency_ms": 4
@@ -332,14 +375,14 @@
     {
       "case_id": "q19",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.2,
+      "evidence_precision": 0.5,
       "entity_recall": 0.5,
-      "nodes_examined": 5,
+      "nodes_examined": 2,
       "nodes_expanded": 0,
       "edges_examined": 0,
       "decision_calls": 0,
       "noul_questions": 0,
-      "evidence_items": 5,
+      "evidence_items": 2,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
       "latency_ms": 4
@@ -357,7 +400,7 @@
       "evidence_items": 5,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
-      "latency_ms": 4
+      "latency_ms": 5
     },
     {
       "case_id": "q21",
@@ -377,14 +420,14 @@
     {
       "case_id": "q22",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.2,
+      "evidence_precision": 1.0,
       "entity_recall": 1.0,
-      "nodes_examined": 5,
+      "nodes_examined": 1,
       "nodes_expanded": 0,
       "edges_examined": 0,
       "decision_calls": 0,
       "noul_questions": 0,
-      "evidence_items": 5,
+      "evidence_items": 1,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
       "latency_ms": 5
@@ -406,8 +449,8 @@
     },
     {
       "case_id": "q24",
-      "evidence_recall": 1.0,
-      "evidence_precision": 0.2,
+      "evidence_recall": 0.0,
+      "evidence_precision": 0.0,
       "entity_recall": 1.0,
       "nodes_examined": 5,
       "nodes_expanded": 0,
@@ -417,19 +460,19 @@
       "evidence_items": 5,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
-      "latency_ms": 4
+      "latency_ms": 5
     },
     {
       "case_id": "q25",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.2,
+      "evidence_precision": 0.5,
       "entity_recall": 1.0,
-      "nodes_examined": 5,
+      "nodes_examined": 2,
       "nodes_expanded": 0,
       "edges_examined": 0,
       "decision_calls": 0,
       "noul_questions": 0,
-      "evidence_items": 5,
+      "evidence_items": 2,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
       "latency_ms": 5
@@ -454,12 +497,12 @@
       "evidence_recall": 1.0,
       "evidence_precision": 0.0,
       "entity_recall": 1.0,
-      "nodes_examined": 5,
+      "nodes_examined": 3,
       "nodes_expanded": 0,
       "edges_examined": 0,
       "decision_calls": 0,
       "noul_questions": 0,
-      "evidence_items": 5,
+      "evidence_items": 3,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
       "latency_ms": 4
@@ -469,12 +512,12 @@
       "evidence_recall": 1.0,
       "evidence_precision": 0.0,
       "entity_recall": 1.0,
-      "nodes_examined": 2,
+      "nodes_examined": 0,
       "nodes_expanded": 0,
       "edges_examined": 0,
       "decision_calls": 0,
       "noul_questions": 0,
-      "evidence_items": 2,
+      "evidence_items": 0,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
       "latency_ms": 4
@@ -492,7 +535,7 @@
       "evidence_items": 2,
       "stop_reason": "lexical_topk",
       "max_depth": 0,
-      "latency_ms": 3
+      "latency_ms": 4
     },
     {
       "case_id": "q30",
@@ -508,6 +551,458 @@
       "stop_reason": "lexical_topk",
       "max_depth": 0,
       "latency_ms": 5
+    }
+  ],
+  "bm25_cases": [
+    {
+      "case_id": "q01",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.3333333333333333,
+      "entity_recall": 0.0,
+      "nodes_examined": 3,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 3,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 15
+    },
+    {
+      "case_id": "q02",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.2,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 22
+    },
+    {
+      "case_id": "q03",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.2,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 21
+    },
+    {
+      "case_id": "q04",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.25,
+      "entity_recall": 0.0,
+      "nodes_examined": 4,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 4,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 22
+    },
+    {
+      "case_id": "q05",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.4,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 22
+    },
+    {
+      "case_id": "q06",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.2,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 19
+    },
+    {
+      "case_id": "q07",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.3333333333333333,
+      "entity_recall": 0.0,
+      "nodes_examined": 3,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 3,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 16
+    },
+    {
+      "case_id": "q08",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.2,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 18
+    },
+    {
+      "case_id": "q09",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.3333333333333333,
+      "entity_recall": 0.0,
+      "nodes_examined": 3,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 3,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 19
+    },
+    {
+      "case_id": "q10",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.5,
+      "entity_recall": 0.0,
+      "nodes_examined": 2,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 2,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 15
+    },
+    {
+      "case_id": "q11",
+      "evidence_recall": 0.0,
+      "evidence_precision": 0.0,
+      "entity_recall": 0.0,
+      "nodes_examined": 0,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 0,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 14
+    },
+    {
+      "case_id": "q12",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.5,
+      "entity_recall": 0.0,
+      "nodes_examined": 2,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 2,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 17
+    },
+    {
+      "case_id": "q13",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.2,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 22
+    },
+    {
+      "case_id": "q14",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.2,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 20
+    },
+    {
+      "case_id": "q15",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.2,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 22
+    },
+    {
+      "case_id": "q16",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.2,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 18
+    },
+    {
+      "case_id": "q17",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.2,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 23
+    },
+    {
+      "case_id": "q18",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.2,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 19
+    },
+    {
+      "case_id": "q19",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.2,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 17
+    },
+    {
+      "case_id": "q20",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.2,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 23
+    },
+    {
+      "case_id": "q21",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.5,
+      "entity_recall": 0.0,
+      "nodes_examined": 2,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 2,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 17
+    },
+    {
+      "case_id": "q22",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.2,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 20
+    },
+    {
+      "case_id": "q23",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.2,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 18
+    },
+    {
+      "case_id": "q24",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.2,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 17
+    },
+    {
+      "case_id": "q25",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.2,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 21
+    },
+    {
+      "case_id": "q26",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.0,
+      "entity_recall": 0.0,
+      "nodes_examined": 0,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 0,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 14
+    },
+    {
+      "case_id": "q27",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.0,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 19
+    },
+    {
+      "case_id": "q28",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.0,
+      "entity_recall": 0.0,
+      "nodes_examined": 3,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 3,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 15
+    },
+    {
+      "case_id": "q29",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.5,
+      "entity_recall": 0.0,
+      "nodes_examined": 2,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 2,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 13
+    },
+    {
+      "case_id": "q30",
+      "evidence_recall": 1.0,
+      "evidence_precision": 0.2,
+      "entity_recall": 0.0,
+      "nodes_examined": 5,
+      "nodes_expanded": 0,
+      "edges_examined": 0,
+      "decision_calls": 0,
+      "noul_questions": 0,
+      "evidence_items": 5,
+      "stop_reason": "bm25_top5",
+      "max_depth": 0,
+      "latency_ms": 19
     }
   ],
   "deterministic_cases": [
@@ -524,7 +1019,7 @@
       "evidence_items": 4,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 33
+      "latency_ms": 34
     },
     {
       "case_id": "q02",
@@ -539,7 +1034,7 @@
       "evidence_items": 4,
       "stop_reason": "frontier_exhausted",
       "max_depth": 3,
-      "latency_ms": 36
+      "latency_ms": 34
     },
     {
       "case_id": "q03",
@@ -569,7 +1064,7 @@
       "evidence_items": 4,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 33
+      "latency_ms": 36
     },
     {
       "case_id": "q05",
@@ -584,7 +1079,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 33
+      "latency_ms": 34
     },
     {
       "case_id": "q06",
@@ -599,7 +1094,7 @@
       "evidence_items": 3,
       "stop_reason": "frontier_exhausted",
       "max_depth": 3,
-      "latency_ms": 36
+      "latency_ms": 34
     },
     {
       "case_id": "q07",
@@ -614,7 +1109,7 @@
       "evidence_items": 3,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 32
+      "latency_ms": 33
     },
     {
       "case_id": "q08",
@@ -629,7 +1124,7 @@
       "evidence_items": 3,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 32
+      "latency_ms": 33
     },
     {
       "case_id": "q09",
@@ -674,7 +1169,7 @@
       "evidence_items": 3,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 32
+      "latency_ms": 34
     },
     {
       "case_id": "q12",
@@ -689,7 +1184,7 @@
       "evidence_items": 5,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 32
+      "latency_ms": 34
     },
     {
       "case_id": "q13",
@@ -704,7 +1199,7 @@
       "evidence_items": 3,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 33
+      "latency_ms": 34
     },
     {
       "case_id": "q14",
@@ -719,7 +1214,7 @@
       "evidence_items": 4,
       "stop_reason": "frontier_exhausted",
       "max_depth": 3,
-      "latency_ms": 34
+      "latency_ms": 33
     },
     {
       "case_id": "q15",
@@ -734,7 +1229,7 @@
       "evidence_items": 4,
       "stop_reason": "frontier_exhausted",
       "max_depth": 3,
-      "latency_ms": 33
+      "latency_ms": 38
     },
     {
       "case_id": "q16",
@@ -749,7 +1244,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 32
+      "latency_ms": 33
     },
     {
       "case_id": "q17",
@@ -764,7 +1259,7 @@
       "evidence_items": 1,
       "stop_reason": "frontier_exhausted",
       "max_depth": 0,
-      "latency_ms": 36
+      "latency_ms": 34
     },
     {
       "case_id": "q18",
@@ -779,7 +1274,7 @@
       "evidence_items": 4,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 32
+      "latency_ms": 34
     },
     {
       "case_id": "q19",
@@ -794,7 +1289,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 32
+      "latency_ms": 33
     },
     {
       "case_id": "q20",
@@ -809,7 +1304,7 @@
       "evidence_items": 3,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 32
+      "latency_ms": 34
     },
     {
       "case_id": "q21",
@@ -824,7 +1319,7 @@
       "evidence_items": 3,
       "stop_reason": "frontier_exhausted",
       "max_depth": 3,
-      "latency_ms": 32
+      "latency_ms": 35
     },
     {
       "case_id": "q22",
@@ -839,7 +1334,7 @@
       "evidence_items": 3,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 32
+      "latency_ms": 35
     },
     {
       "case_id": "q23",
@@ -854,7 +1349,7 @@
       "evidence_items": 3,
       "stop_reason": "frontier_exhausted",
       "max_depth": 3,
-      "latency_ms": 32
+      "latency_ms": 33
     },
     {
       "case_id": "q24",
@@ -869,7 +1364,7 @@
       "evidence_items": 3,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 32
+      "latency_ms": 33
     },
     {
       "case_id": "q25",
@@ -884,7 +1379,7 @@
       "evidence_items": 5,
       "stop_reason": "frontier_exhausted",
       "max_depth": 3,
-      "latency_ms": 33
+      "latency_ms": 34
     },
     {
       "case_id": "q26",
@@ -899,7 +1394,7 @@
       "evidence_items": 0,
       "stop_reason": "no_seeds",
       "max_depth": 0,
-      "latency_ms": 31
+      "latency_ms": 35
     },
     {
       "case_id": "q27",
@@ -914,7 +1409,7 @@
       "evidence_items": 6,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 32
+      "latency_ms": 33
     },
     {
       "case_id": "q28",
@@ -929,7 +1424,7 @@
       "evidence_items": 0,
       "stop_reason": "frontier_exhausted",
       "max_depth": 0,
-      "latency_ms": 31
+      "latency_ms": 32
     },
     {
       "case_id": "q29",
@@ -944,7 +1439,7 @@
       "evidence_items": 4,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 31
+      "latency_ms": 35
     },
     {
       "case_id": "q30",
@@ -959,24 +1454,24 @@
       "evidence_items": 4,
       "stop_reason": "frontier_exhausted",
       "max_depth": 3,
-      "latency_ms": 32
+      "latency_ms": 34
     }
   ],
   "semantic_cases": [
     {
       "case_id": "q01",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.3333333333333333,
+      "evidence_precision": 0.5,
       "entity_recall": 1.0,
-      "nodes_examined": 11,
-      "nodes_expanded": 5,
-      "edges_examined": 11,
-      "decision_calls": 10,
-      "noul_questions": 14,
-      "evidence_items": 3,
-      "stop_reason": "frontier_exhausted",
-      "max_depth": 2,
-      "latency_ms": 2507
+      "nodes_examined": 4,
+      "nodes_expanded": 1,
+      "edges_examined": 1,
+      "decision_calls": 2,
+      "noul_questions": 2,
+      "evidence_items": 2,
+      "stop_reason": "evidence_sufficient",
+      "max_depth": 0,
+      "latency_ms": 923
     },
     {
       "case_id": "q02",
@@ -991,37 +1486,37 @@
       "evidence_items": 4,
       "stop_reason": "frontier_exhausted",
       "max_depth": 3,
-      "latency_ms": 2322
+      "latency_ms": 2283
     },
     {
       "case_id": "q03",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.25,
+      "evidence_precision": 1.0,
       "entity_recall": 1.0,
-      "nodes_examined": 9,
-      "nodes_expanded": 5,
-      "edges_examined": 12,
-      "decision_calls": 10,
-      "noul_questions": 13,
-      "evidence_items": 4,
-      "stop_reason": "frontier_exhausted",
-      "max_depth": 2,
-      "latency_ms": 2410
+      "nodes_examined": 4,
+      "nodes_expanded": 1,
+      "edges_examined": 1,
+      "decision_calls": 2,
+      "noul_questions": 2,
+      "evidence_items": 1,
+      "stop_reason": "evidence_sufficient",
+      "max_depth": 0,
+      "latency_ms": 433
     },
     {
       "case_id": "q04",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.3333333333333333,
+      "evidence_precision": 0.5,
       "entity_recall": 1.0,
-      "nodes_examined": 7,
-      "nodes_expanded": 5,
-      "edges_examined": 10,
-      "decision_calls": 10,
-      "noul_questions": 13,
-      "evidence_items": 3,
-      "stop_reason": "frontier_exhausted",
-      "max_depth": 2,
-      "latency_ms": 2367
+      "nodes_examined": 5,
+      "nodes_expanded": 1,
+      "edges_examined": 2,
+      "decision_calls": 2,
+      "noul_questions": 3,
+      "evidence_items": 2,
+      "stop_reason": "evidence_sufficient",
+      "max_depth": 0,
+      "latency_ms": 491
     },
     {
       "case_id": "q05",
@@ -1030,13 +1525,13 @@
       "entity_recall": 1.0,
       "nodes_examined": 4,
       "nodes_expanded": 1,
-      "edges_examined": 3,
+      "edges_examined": 1,
       "decision_calls": 2,
       "noul_questions": 2,
       "evidence_items": 2,
-      "stop_reason": "frontier_exhausted",
-      "max_depth": 1,
-      "latency_ms": 488
+      "stop_reason": "evidence_sufficient",
+      "max_depth": 0,
+      "latency_ms": 446
     },
     {
       "case_id": "q06",
@@ -1045,13 +1540,13 @@
       "entity_recall": 1.0,
       "nodes_examined": 3,
       "nodes_expanded": 1,
-      "edges_examined": 3,
+      "edges_examined": 2,
       "decision_calls": 2,
       "noul_questions": 3,
       "evidence_items": 1,
-      "stop_reason": "frontier_exhausted",
-      "max_depth": 1,
-      "latency_ms": 483
+      "stop_reason": "evidence_sufficient",
+      "max_depth": 0,
+      "latency_ms": 469
     },
     {
       "case_id": "q07",
@@ -1066,7 +1561,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 847
+      "latency_ms": 930
     },
     {
       "case_id": "q08",
@@ -1081,7 +1576,7 @@
       "evidence_items": 1,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 952
+      "latency_ms": 932
     },
     {
       "case_id": "q09",
@@ -1096,22 +1591,22 @@
       "evidence_items": 1,
       "stop_reason": "frontier_exhausted",
       "max_depth": 0,
-      "latency_ms": 32
+      "latency_ms": 33
     },
     {
       "case_id": "q10",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.5,
+      "evidence_precision": 1.0,
       "entity_recall": 0.0,
-      "nodes_examined": 4,
-      "nodes_expanded": 3,
-      "edges_examined": 6,
-      "decision_calls": 5,
-      "noul_questions": 8,
-      "evidence_items": 2,
+      "nodes_examined": 3,
+      "nodes_expanded": 2,
+      "edges_examined": 4,
+      "decision_calls": 3,
+      "noul_questions": 5,
+      "evidence_items": 1,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 1082
+      "latency_ms": 717
     },
     {
       "case_id": "q11",
@@ -1126,22 +1621,22 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 1372
+      "latency_ms": 1400
     },
     {
       "case_id": "q12",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.3333333333333333,
+      "evidence_precision": 0.5,
       "entity_recall": 1.0,
-      "nodes_examined": 5,
-      "nodes_expanded": 4,
-      "edges_examined": 8,
-      "decision_calls": 8,
-      "noul_questions": 12,
-      "evidence_items": 3,
+      "nodes_examined": 4,
+      "nodes_expanded": 3,
+      "edges_examined": 7,
+      "decision_calls": 6,
+      "noul_questions": 10,
+      "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 1790
+      "latency_ms": 1389
     },
     {
       "case_id": "q13",
@@ -1156,22 +1651,22 @@
       "evidence_items": 1,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 885
+      "latency_ms": 857
     },
     {
       "case_id": "q14",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.3333333333333333,
+      "evidence_precision": 0.5,
       "entity_recall": 1.0,
-      "nodes_examined": 8,
-      "nodes_expanded": 5,
-      "edges_examined": 10,
-      "decision_calls": 10,
-      "noul_questions": 14,
-      "evidence_items": 3,
+      "nodes_examined": 7,
+      "nodes_expanded": 4,
+      "edges_examined": 8,
+      "decision_calls": 8,
+      "noul_questions": 11,
+      "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 3,
-      "latency_ms": 2213
+      "latency_ms": 1682
     },
     {
       "case_id": "q15",
@@ -1186,7 +1681,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 3,
-      "latency_ms": 1599
+      "latency_ms": 1513
     },
     {
       "case_id": "q16",
@@ -1201,7 +1696,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 1477
+      "latency_ms": 1387
     },
     {
       "case_id": "q17",
@@ -1216,7 +1711,7 @@
       "evidence_items": 1,
       "stop_reason": "frontier_exhausted",
       "max_depth": 0,
-      "latency_ms": 32
+      "latency_ms": 35
     },
     {
       "case_id": "q18",
@@ -1231,7 +1726,7 @@
       "evidence_items": 4,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 2208
+      "latency_ms": 2158
     },
     {
       "case_id": "q19",
@@ -1246,7 +1741,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 499
+      "latency_ms": 468
     },
     {
       "case_id": "q20",
@@ -1261,7 +1756,7 @@
       "evidence_items": 3,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 1750
+      "latency_ms": 1839
     },
     {
       "case_id": "q21",
@@ -1276,7 +1771,7 @@
       "evidence_items": 1,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 475
+      "latency_ms": 439
     },
     {
       "case_id": "q22",
@@ -1291,7 +1786,7 @@
       "evidence_items": 1,
       "stop_reason": "frontier_exhausted",
       "max_depth": 0,
-      "latency_ms": 1055
+      "latency_ms": 921
     },
     {
       "case_id": "q23",
@@ -1306,7 +1801,7 @@
       "evidence_items": 1,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 470
+      "latency_ms": 517
     },
     {
       "case_id": "q24",
@@ -1321,7 +1816,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 2232
+      "latency_ms": 2225
     },
     {
       "case_id": "q25",
@@ -1336,7 +1831,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 2259
+      "latency_ms": 2206
     },
     {
       "case_id": "q26",
@@ -1351,7 +1846,7 @@
       "evidence_items": 0,
       "stop_reason": "no_seeds",
       "max_depth": 0,
-      "latency_ms": 31
+      "latency_ms": 33
     },
     {
       "case_id": "q27",
@@ -1366,7 +1861,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 1679
+      "latency_ms": 1732
     },
     {
       "case_id": "q28",
@@ -1381,7 +1876,7 @@
       "evidence_items": 0,
       "stop_reason": "frontier_exhausted",
       "max_depth": 0,
-      "latency_ms": 31
+      "latency_ms": 32
     },
     {
       "case_id": "q29",
@@ -1396,7 +1891,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 2077
+      "latency_ms": 2141
     },
     {
       "case_id": "q30",
@@ -1411,24 +1906,24 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 3,
-      "latency_ms": 2388
+      "latency_ms": 2247
     }
   ],
   "hybrid_cases": [
     {
       "case_id": "q01",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.3333333333333333,
+      "evidence_precision": 0.5,
       "entity_recall": 1.0,
-      "nodes_examined": 11,
-      "nodes_expanded": 5,
-      "edges_examined": 11,
-      "decision_calls": 10,
-      "noul_questions": 14,
-      "evidence_items": 3,
-      "stop_reason": "frontier_exhausted",
-      "max_depth": 2,
-      "latency_ms": 2255
+      "nodes_examined": 4,
+      "nodes_expanded": 1,
+      "edges_examined": 1,
+      "decision_calls": 2,
+      "noul_questions": 2,
+      "evidence_items": 2,
+      "stop_reason": "evidence_sufficient",
+      "max_depth": 0,
+      "latency_ms": 438
     },
     {
       "case_id": "q02",
@@ -1443,37 +1938,37 @@
       "evidence_items": 4,
       "stop_reason": "frontier_exhausted",
       "max_depth": 3,
-      "latency_ms": 2385
+      "latency_ms": 2226
     },
     {
       "case_id": "q03",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.25,
+      "evidence_precision": 1.0,
       "entity_recall": 1.0,
-      "nodes_examined": 9,
-      "nodes_expanded": 5,
-      "edges_examined": 12,
-      "decision_calls": 10,
-      "noul_questions": 13,
-      "evidence_items": 4,
-      "stop_reason": "frontier_exhausted",
-      "max_depth": 2,
-      "latency_ms": 2236
+      "nodes_examined": 4,
+      "nodes_expanded": 1,
+      "edges_examined": 1,
+      "decision_calls": 2,
+      "noul_questions": 2,
+      "evidence_items": 1,
+      "stop_reason": "evidence_sufficient",
+      "max_depth": 0,
+      "latency_ms": 518
     },
     {
       "case_id": "q04",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.3333333333333333,
+      "evidence_precision": 0.5,
       "entity_recall": 1.0,
-      "nodes_examined": 7,
-      "nodes_expanded": 5,
-      "edges_examined": 10,
-      "decision_calls": 10,
-      "noul_questions": 12,
-      "evidence_items": 3,
-      "stop_reason": "frontier_exhausted",
-      "max_depth": 2,
-      "latency_ms": 2506
+      "nodes_examined": 5,
+      "nodes_expanded": 1,
+      "edges_examined": 2,
+      "decision_calls": 2,
+      "noul_questions": 3,
+      "evidence_items": 2,
+      "stop_reason": "evidence_sufficient",
+      "max_depth": 0,
+      "latency_ms": 469
     },
     {
       "case_id": "q05",
@@ -1482,13 +1977,13 @@
       "entity_recall": 1.0,
       "nodes_examined": 4,
       "nodes_expanded": 1,
-      "edges_examined": 3,
+      "edges_examined": 1,
       "decision_calls": 2,
       "noul_questions": 2,
       "evidence_items": 2,
-      "stop_reason": "frontier_exhausted",
-      "max_depth": 1,
-      "latency_ms": 464
+      "stop_reason": "evidence_sufficient",
+      "max_depth": 0,
+      "latency_ms": 467
     },
     {
       "case_id": "q06",
@@ -1497,13 +1992,13 @@
       "entity_recall": 1.0,
       "nodes_examined": 3,
       "nodes_expanded": 1,
-      "edges_examined": 3,
+      "edges_examined": 2,
       "decision_calls": 2,
       "noul_questions": 3,
       "evidence_items": 1,
-      "stop_reason": "frontier_exhausted",
-      "max_depth": 1,
-      "latency_ms": 569
+      "stop_reason": "evidence_sufficient",
+      "max_depth": 0,
+      "latency_ms": 446
     },
     {
       "case_id": "q07",
@@ -1518,7 +2013,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 926
+      "latency_ms": 898
     },
     {
       "case_id": "q08",
@@ -1533,7 +2028,7 @@
       "evidence_items": 1,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 1041
+      "latency_ms": 1075
     },
     {
       "case_id": "q09",
@@ -1548,7 +2043,7 @@
       "evidence_items": 1,
       "stop_reason": "frontier_exhausted",
       "max_depth": 0,
-      "latency_ms": 35
+      "latency_ms": 33
     },
     {
       "case_id": "q10",
@@ -1563,7 +2058,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 1162
+      "latency_ms": 1091
     },
     {
       "case_id": "q11",
@@ -1578,22 +2073,22 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 1455
+      "latency_ms": 1267
     },
     {
       "case_id": "q12",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.5,
+      "evidence_precision": 0.3333333333333333,
       "entity_recall": 1.0,
-      "nodes_examined": 4,
-      "nodes_expanded": 3,
-      "edges_examined": 7,
-      "decision_calls": 6,
-      "noul_questions": 10,
-      "evidence_items": 2,
+      "nodes_examined": 6,
+      "nodes_expanded": 4,
+      "edges_examined": 8,
+      "decision_calls": 8,
+      "noul_questions": 12,
+      "evidence_items": 3,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 1401
+      "latency_ms": 1692
     },
     {
       "case_id": "q13",
@@ -1608,22 +2103,22 @@
       "evidence_items": 1,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 929
+      "latency_ms": 895
     },
     {
       "case_id": "q14",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.5,
+      "evidence_precision": 0.3333333333333333,
       "entity_recall": 1.0,
-      "nodes_examined": 7,
-      "nodes_expanded": 4,
-      "edges_examined": 8,
-      "decision_calls": 8,
-      "noul_questions": 11,
-      "evidence_items": 2,
+      "nodes_examined": 8,
+      "nodes_expanded": 5,
+      "edges_examined": 10,
+      "decision_calls": 10,
+      "noul_questions": 14,
+      "evidence_items": 3,
       "stop_reason": "frontier_exhausted",
       "max_depth": 3,
-      "latency_ms": 1804
+      "latency_ms": 2113
     },
     {
       "case_id": "q15",
@@ -1638,7 +2133,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 3,
-      "latency_ms": 1557
+      "latency_ms": 1625
     },
     {
       "case_id": "q16",
@@ -1653,7 +2148,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 1590
+      "latency_ms": 1263
     },
     {
       "case_id": "q17",
@@ -1675,15 +2170,15 @@
       "evidence_recall": 1.0,
       "evidence_precision": 0.25,
       "entity_recall": 1.0,
-      "nodes_examined": 11,
+      "nodes_examined": 13,
       "nodes_expanded": 6,
       "edges_examined": 17,
       "decision_calls": 10,
       "noul_questions": 14,
       "evidence_items": 4,
       "stop_reason": "frontier_exhausted",
-      "max_depth": 2,
-      "latency_ms": 2354
+      "max_depth": 3,
+      "latency_ms": 2200
     },
     {
       "case_id": "q19",
@@ -1698,7 +2193,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 505
+      "latency_ms": 439
     },
     {
       "case_id": "q20",
@@ -1713,7 +2208,7 @@
       "evidence_items": 3,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 1725
+      "latency_ms": 2182
     },
     {
       "case_id": "q21",
@@ -1728,7 +2223,7 @@
       "evidence_items": 1,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 541
+      "latency_ms": 443
     },
     {
       "case_id": "q22",
@@ -1743,7 +2238,7 @@
       "evidence_items": 1,
       "stop_reason": "frontier_exhausted",
       "max_depth": 0,
-      "latency_ms": 887
+      "latency_ms": 898
     },
     {
       "case_id": "q23",
@@ -1758,7 +2253,7 @@
       "evidence_items": 1,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 442
+      "latency_ms": 566
     },
     {
       "case_id": "q24",
@@ -1768,27 +2263,27 @@
       "nodes_examined": 6,
       "nodes_expanded": 5,
       "edges_examined": 11,
-      "decision_calls": 9,
+      "decision_calls": 10,
       "noul_questions": 13,
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 2,
-      "latency_ms": 2022
+      "latency_ms": 2218
     },
     {
       "case_id": "q25",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.5,
+      "evidence_precision": 0.3333333333333333,
       "entity_recall": 1.0,
-      "nodes_examined": 7,
-      "nodes_expanded": 5,
-      "edges_examined": 12,
+      "nodes_examined": 9,
+      "nodes_expanded": 6,
+      "edges_examined": 13,
       "decision_calls": 10,
       "noul_questions": 15,
-      "evidence_items": 2,
+      "evidence_items": 3,
       "stop_reason": "frontier_exhausted",
-      "max_depth": 2,
-      "latency_ms": 2291
+      "max_depth": 3,
+      "latency_ms": 2294
     },
     {
       "case_id": "q26",
@@ -1803,7 +2298,7 @@
       "evidence_items": 0,
       "stop_reason": "no_seeds",
       "max_depth": 0,
-      "latency_ms": 31
+      "latency_ms": 33
     },
     {
       "case_id": "q27",
@@ -1818,7 +2313,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 1,
-      "latency_ms": 1796
+      "latency_ms": 1784
     },
     {
       "case_id": "q28",
@@ -1833,22 +2328,22 @@
       "evidence_items": 0,
       "stop_reason": "frontier_exhausted",
       "max_depth": 0,
-      "latency_ms": 31
+      "latency_ms": 32
     },
     {
       "case_id": "q29",
       "evidence_recall": 1.0,
-      "evidence_precision": 0.5,
+      "evidence_precision": 0.3333333333333333,
       "entity_recall": 1.0,
-      "nodes_examined": 8,
+      "nodes_examined": 12,
       "nodes_expanded": 7,
       "edges_examined": 16,
       "decision_calls": 10,
       "noul_questions": 14,
-      "evidence_items": 2,
+      "evidence_items": 3,
       "stop_reason": "frontier_exhausted",
-      "max_depth": 1,
-      "latency_ms": 2374
+      "max_depth": 2,
+      "latency_ms": 2291
     },
     {
       "case_id": "q30",
@@ -1863,7 +2358,7 @@
       "evidence_items": 2,
       "stop_reason": "frontier_exhausted",
       "max_depth": 3,
-      "latency_ms": 1764
+      "latency_ms": 1770
     }
   ]
 }

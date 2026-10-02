@@ -15,7 +15,7 @@ use std::time::Instant;
 pub struct AnswerCaseResult {
     pub case_id: String,
     pub cited: Vec<String>,
-    pub citation_precision: f64,
+    pub citation_validity: f64,
     pub expected_coverage: f64,
     pub abstained: bool,
     pub abstain_correct: bool,
@@ -26,7 +26,7 @@ pub struct AnswerCaseResult {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct AnswerEvalSummary {
     pub n: usize,
-    pub mean_citation_precision: f64,
+    pub mean_citation_validity: f64,
     pub mean_expected_coverage: f64,
     pub abstention_rate: f64,
     pub abstain_correct_rate: f64,
@@ -124,10 +124,17 @@ where
             .expect("answer failed");
         let cited: Vec<String> = resp.citations.iter().map(|c| c.key()).collect();
         let ret_set: HashSet<&str> = retrieved.iter().map(|s| s.as_str()).collect();
-        let citation_precision = if cited.is_empty() {
-            if resp.abstained { 1.0 } else { 0.0 }
+        let citation_validity = if cited.is_empty() {
+            if resp.abstained {
+                1.0
+            } else {
+                0.0
+            }
         } else {
-            cited.iter().filter(|c| ret_set.contains(c.as_str())).count() as f64
+            cited
+                .iter()
+                .filter(|c| ret_set.contains(c.as_str()))
+                .count() as f64
                 / cited.len() as f64
         };
         let expected_coverage = if case.expected_evidence.is_empty() {
@@ -139,11 +146,12 @@ where
         };
         let abstain_correct =
             (resp.abstained && retrieved.is_empty()) || (!resp.abstained && !retrieved.is_empty());
-        let retrieval_recall = crate::eval::metrics::evidence_recall(&case.expected_evidence, &retrieved);
+        let retrieval_recall =
+            crate::eval::metrics::evidence_recall(&case.expected_evidence, &retrieved);
         results.push(AnswerCaseResult {
             case_id: case.id.clone(),
             cited,
-            citation_precision,
+            citation_validity,
             expected_coverage,
             abstained: resp.abstained,
             abstain_correct,
@@ -155,7 +163,7 @@ where
     AnswerEvalReport {
         summary: AnswerEvalSummary {
             n: results.len(),
-            mean_citation_precision: results.iter().map(|r| r.citation_precision).sum::<f64>() / n,
+            mean_citation_validity: results.iter().map(|r| r.citation_validity).sum::<f64>() / n,
             mean_expected_coverage: results.iter().map(|r| r.expected_coverage).sum::<f64>() / n,
             abstention_rate: results.iter().filter(|r| r.abstained).count() as f64 / n,
             abstain_correct_rate: results.iter().filter(|r| r.abstain_correct).count() as f64 / n,

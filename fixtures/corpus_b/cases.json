@@ -1,0 +1,110 @@
+[
+  {
+    "id": "b01",
+    "query": "Where must large vessels embark a harbor pilot?",
+    "expected_entities": [
+      "compulsory-pilotage"
+    ],
+    "expected_evidence": [
+      "pilotage-ordinance#pilotage-ordinance-s3"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "b02",
+    "query": "How are sunken hazards marked for navigation?",
+    "expected_entities": [
+      "wreck-buoy-protocol"
+    ],
+    "expected_evidence": [
+      "buoyage-manual#buoyage-manual-wreck"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "b03",
+    "query": "What sound patterns apply when sailing in thick weather?",
+    "expected_entities": [
+      "sound-signaling-rule"
+    ],
+    "expected_evidence": [
+      "fog-signals#fog-signals-s2"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "b04",
+    "query": "How deep is the dredged way at datum?",
+    "expected_entities": [
+      "datum-claim"
+    ],
+    "expected_evidence": [
+      "tide-tables#tide-tables-note"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "b05",
+    "query": "Where does the coaster Meridian rest?",
+    "expected_entities": [
+      "meridian-wreck"
+    ],
+    "expected_evidence": [
+      "wreck-register#wreck-register-7"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "b06",
+    "query": "Which charted mark protocol covers sunken hazards?",
+    "expected_entities": [
+      "wreck-buoy-protocol"
+    ],
+    "expected_evidence": [
+      "buoyage-manual#buoyage-manual-wreck"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "b07",
+    "query": "What marks the Meridian wreck and what does the general wreck protocol require?",
+    "expected_entities": [
+      "meridian-wreck",
+      "wreck-buoy-protocol"
+    ],
+    "expected_evidence": [
+      "wreck-register#wreck-register-7",
+      "buoyage-manual#buoyage-manual-wreck"
+    ],
+    "max_hops": 3
+  },
+  {
+    "id": "b08",
+    "query": "Quantum ballast teleportation procedures?",
+    "expected_entities": [],
+    "expected_evidence": [],
+    "max_hops": 2
+  },
+  {
+    "id": "b09",
+    "query": "What are the harbor office hours?",
+    "expected_entities": [
+      "harbor-handbook"
+    ],
+    "expected_evidence": [
+      "harbor-handbook#harbor-handbook-general"
+    ],
+    "max_hops": 2
+  },
+  {
+    "id": "b10",
+    "query": "What must be hoisted under the compulsory pilotage rule?",
+    "expected_entities": [
+      "compulsory-pilotage"
+    ],
+    "expected_evidence": [
+      "pilotage-ordinance#pilotage-ordinance-s3"
+    ],
+    "max_hops": 3
+  }
+]

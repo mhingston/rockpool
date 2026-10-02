@@ -1,5 +1,33 @@
-use crate::graph::model::{edge_type_weight, EdgeKind, NodeKind};
+use crate::graph::model::{edge_type_weight, EdgeKind, EvidenceRef, NodeKind};
 use serde::{Deserialize, Serialize};
+
+/// First-class routing verdict. Control state lives here — never in
+/// display strings. `fallback: true` means a deterministic prior stood in
+/// for a failed/exhausted semantic call; `Unavailable` means the mode
+/// forbids silent fallback (SemanticOnly) and the degradation is explicit.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub enum Verdict {
+    Accept { fallback: bool },
+    Review,
+    Reject,
+    Unavailable,
+}
+
+impl Verdict {
+    pub fn render(&self) -> &str {
+        match self {
+            Verdict::Accept { fallback: false } => "ACCEPT",
+            Verdict::Accept { fallback: true } => "ACCEPT(fallback)",
+            Verdict::Review => "REVIEW",
+            Verdict::Reject => "REJECT",
+            Verdict::Unavailable => "UNAVAILABLE",
+        }
+    }
+
+    pub fn enqueued(&self) -> bool {
+        matches!(self, Verdict::Accept { .. } | Verdict::Review)
+    }
+}
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Candidate {
@@ -12,7 +40,10 @@ pub struct Candidate {
     pub graph_prior: f32,
     pub semantic: Option<f64>,
     pub frontier_score: Option<f64>,
-    pub decision: Option<String>,
+    pub decision: Option<Verdict>,
+    /// Edge-level evidence refs carried on the traversed relationship.
+    #[serde(default)]
+    pub edge_evidence: Vec<EvidenceRef>,
 }
 
 #[derive(Debug, Clone)]

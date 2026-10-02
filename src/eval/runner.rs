@@ -1,4 +1,5 @@
 use crate::decision::client::DecisionClient;
+use crate::eval::bm25::Bm25Index;
 use crate::eval::cases::EvalCase;
 use crate::eval::metrics::{self, CaseResult};
 use crate::evidence::store::MemoryEvidenceStore;
@@ -101,10 +102,10 @@ pub async fn run_single_graph_mode<D: DecisionClient>(
     }
 }
 
-/// Run all four conditions: lexical, deterministic, semantic-only, hybrid.
-/// `decision`/`sufficiency` are the semantic backends for the two semantic
-/// modes (any `DecisionClient`: fixture stand-in or live System One).
-/// Deterministic graph mode uses no decision API by definition.
+/// Run all conditions: substring-lexical, BM25, deterministic graph,
+/// semantic-only, hybrid. `decision`/`sufficiency` are the semantic backends
+/// for the two semantic modes (any `DecisionClient`: fixture stand-in or
+/// live System One). Deterministic graph mode uses no decision API.
 pub async fn run_eval<D: DecisionClient>(
     kg: &KnowledgeGraph,
     store: &MemoryEvidenceStore,
@@ -113,8 +114,12 @@ pub async fn run_eval<D: DecisionClient>(
     decision: &D,
     sufficiency: &D,
 ) -> EvalReport {
-
+    let bm25 = Bm25Index::build(store).expect("bm25 index build failed");
+    let curve_ks = [1usize, 3, 5, 10, 20];
+    let mut curve_acc: std::collections::BTreeMap<usize, (f64, f64, usize)> =
+        std::collections::BTreeMap::new();
     let mut lexical = vec![];
+    let mut bm25_cases = vec![];
     let mut deterministic = vec![];
     let mut semantic = vec![];
     let mut hybrid = vec![];
@@ -137,6 +142,32 @@ pub async fn run_eval<D: DecisionClient>(
             stop_reason: "lexical_topk".into(),
             max_depth: 0,
             latency_ms: t0.elapsed().as_millis() as u64,
+        });
+        // BM25 at top-5 (head-to-head row) plus curve points.
+        let t1 = Instant::now();
+        let b5 = bm25.search(&case.query, 5).unwrap_or_default();
+        for k in curve_ks {
+            let rk = bm25.search(&case.query, k).unwrap_or_default();
+            let (r, p) = crate::eval::bm25::pr_at_k(&case.expected_evidence, &rk);
+            let e = curve_acc.entry(k).or_insert((0.0, 0.0, 0));
+            e.0 += r;
+            e.1 += p;
+            e.2 += 1;
+        }
+        bm25_cases.push(CaseResult {
+            case_id: case.id.clone(),
+            evidence_recall: metrics::evidence_recall(&case.expected_evidence, &b5),
+            evidence_precision: metrics::evidence_precision(&case.expected_evidence, &b5),
+            entity_recall: 0.0,
+            nodes_examined: b5.len(),
+            nodes_expanded: 0,
+            edges_examined: 0,
+            decision_calls: 0,
+            noul_questions: 0,
+            evidence_items: b5.len(),
+            stop_reason: "bm25_top5".into(),
+            max_depth: 0,
+            latency_ms: t1.elapsed().as_millis() as u64,
         });
         deterministic.push(
             run_single_graph_mode::<D>(
@@ -176,12 +207,23 @@ pub async fn run_eval<D: DecisionClient>(
         );
     }
 
+    let bm25_curve: Vec<crate::eval::bm25::CurvePoint> = curve_acc
+        .into_iter()
+        .map(|(k, (r, p, n))| crate::eval::bm25::CurvePoint {
+            k,
+            recall: r / n.max(1) as f64,
+            precision: p / n.max(1) as f64,
+        })
+        .collect();
     EvalReport {
         lexical: metrics::summarize(&lexical),
+        bm25_top5: metrics::summarize(&bm25_cases),
+        bm25_curve,
         deterministic: metrics::summarize(&deterministic),
         semantic: metrics::summarize(&semantic),
         hybrid: metrics::summarize(&hybrid),
         lexical_cases: lexical,
+        bm25_cases,
         deterministic_cases: deterministic,
         semantic_cases: semantic,
         hybrid_cases: hybrid,
@@ -191,11 +233,16 @@ pub async fn run_eval<D: DecisionClient>(
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct EvalReport {
     pub lexical: crate::eval::metrics::EvalSummary,
+    pub bm25_top5: crate::eval::metrics::EvalSummary,
+    #[serde(default)]
+    pub bm25_curve: Vec<crate::eval::bm25::CurvePoint>,
     pub deterministic: crate::eval::metrics::EvalSummary,
     pub semantic: crate::eval::metrics::EvalSummary,
     pub hybrid: crate::eval::metrics::EvalSummary,
     #[serde(skip_serializing_if = "Vec::is_empty", default)]
     pub lexical_cases: Vec<CaseResult>,
+    #[serde(skip_serializing_if = "Vec::is_empty", default)]
+    pub bm25_cases: Vec<CaseResult>,
     #[serde(skip_serializing_if = "Vec::is_empty", default)]
     pub deterministic_cases: Vec<CaseResult>,
     #[serde(skip_serializing_if = "Vec::is_empty", default)]

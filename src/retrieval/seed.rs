@@ -21,10 +21,37 @@ fn stem(t: &str) -> String {
 fn is_stop(t: &str) -> bool {
     matches!(
         t,
-        "what" | "which" | "does" | "do" | "how" | "why" | "when" | "with" | "from"
-            | "that" | "this" | "these" | "those" | "are" | "was" | "were" | "has"
-            | "have" | "had" | "can" | "could" | "should" | "would" | "there" | "their"
-            | "about" | "into" | "tell" | "the" | "and" | "for"
+        "what"
+            | "which"
+            | "does"
+            | "do"
+            | "how"
+            | "why"
+            | "when"
+            | "with"
+            | "from"
+            | "that"
+            | "this"
+            | "these"
+            | "those"
+            | "are"
+            | "was"
+            | "were"
+            | "has"
+            | "have"
+            | "had"
+            | "can"
+            | "could"
+            | "should"
+            | "would"
+            | "there"
+            | "their"
+            | "about"
+            | "into"
+            | "tell"
+            | "the"
+            | "and"
+            | "for"
     )
 }
 
@@ -32,15 +59,14 @@ fn tokenize(s: &str) -> Vec<String> {
     s.to_lowercase()
         .split(|c: char| !c.is_alphanumeric())
         .filter(|t| t.len() > 3)
-        .map(|t| stem(t))
+        .map(stem)
         .filter(|t| !is_stop(t))
         .collect()
 }
 
 fn token_overlap(a: &str, b: &str) -> f64 {
     let ta = tokenize(a);
-    let tb_set: std::collections::HashSet<String> =
-        tokenize(b).into_iter().collect();
+    let tb_set: std::collections::HashSet<String> = tokenize(b).into_iter().collect();
     if ta.is_empty() {
         return 0.0;
     }

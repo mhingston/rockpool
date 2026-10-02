@@ -76,10 +76,8 @@ fn resolve_citations(
     evidence: &[super::types::AnswerEvidence],
     max: usize,
 ) -> (String, Vec<Citation>, Vec<String>) {
-    let by_source: BTreeMap<&str, &super::types::AnswerEvidence> = evidence
-        .iter()
-        .map(|e| (e.source_id.as_str(), e))
-        .collect();
+    let by_source: BTreeMap<&str, &super::types::AnswerEvidence> =
+        evidence.iter().map(|e| (e.source_id.as_str(), e)).collect();
     let mut seen: HashSet<String> = HashSet::new();
     let mut citations = vec![];
     let mut dropped = vec![];
@@ -99,7 +97,11 @@ fn resolve_citations(
     for m in markers {
         let marker = format!("[[{m}]]");
         if let Some(ev) = by_source.get(m.as_str()) {
-            cleaned = cleaned.replacen(&marker, &format!("[{}#{}]", ev.document_id, ev.source_id), 1);
+            cleaned = cleaned.replacen(
+                &marker,
+                &format!("[{}#{}]", ev.document_id, ev.source_id),
+                1,
+            );
             if seen.insert(m.clone()) && citations.len() < max {
                 citations.push(Citation {
                     document_id: ev.document_id.clone(),
@@ -123,7 +125,10 @@ impl AnswerClient for OpenAiCompatAnswerClient {
         if request.evidence.is_empty() {
             return Err(AnswerError::NoEvidence);
         }
-        let model = request.model.clone().unwrap_or_else(|| self.config.model.clone());
+        let model = request
+            .model
+            .clone()
+            .unwrap_or_else(|| self.config.model.clone());
         let body = serde_json::json!({
             "model": model,
             "messages": [
@@ -136,9 +141,15 @@ impl AnswerClient for OpenAiCompatAnswerClient {
         if let Some(key) = &self.config.api_key {
             rb = rb.bearer_auth(key);
         }
-        let resp = rb.send().await.map_err(|e| AnswerError::Transport(e.to_string()))?;
+        let resp = rb
+            .send()
+            .await
+            .map_err(|e| AnswerError::Transport(e.to_string()))?;
         let status = resp.status();
-        let text = resp.text().await.map_err(|e| AnswerError::Transport(e.to_string()))?;
+        let text = resp
+            .text()
+            .await
+            .map_err(|e| AnswerError::Transport(e.to_string()))?;
         if !status.is_success() {
             return Err(AnswerError::Transport(format!("HTTP {status}: {text}")));
         }

@@ -1,13 +1,16 @@
 use super::client::DecisionClient;
-use super::types::{Answer, DecisionError, DecisionRequest, DecisionResponse, Question};use async_trait::async_trait;
+use super::types::{Answer, DecisionError, DecisionRequest, DecisionResponse, Question};
+use async_trait::async_trait;
 use std::collections::BTreeMap;
 use std::sync::Arc;
 
 /// Deterministic fixture client for tests and offline replay.
 /// Maps each question key to a fixed probability via a resolver fn.
+type Resolver = std::sync::Arc<dyn Fn(&str, &Question, &DecisionRequest) -> f64 + Send + Sync>;
+
 #[derive(Clone)]
 pub struct FixtureDecisionClient {
-    resolver: Arc<dyn Fn(&str, &Question, &DecisionRequest) -> f64 + Send + Sync>,
+    resolver: Resolver,
     pub backend_name: String,
 }
 
@@ -17,7 +20,7 @@ impl FixtureDecisionClient {
         F: Fn(&str, &Question, &DecisionRequest) -> f64 + Send + Sync + 'static,
     {
         Self {
-            resolver: Arc::new(resolver),
+            resolver: Arc::new(resolver) as Resolver,
             backend_name: "fixture".into(),
         }
     }
@@ -104,10 +107,28 @@ fn tokenize(s: &str) -> Vec<String> {
 fn is_stop(t: &str) -> bool {
     matches!(
         t,
-        "what" | "which" | "does" | "how" | "why" | "when" | "with" | "from"
-            | "that" | "this" | "these" | "those" | "were" | "have"
-            | "could" | "should" | "would" | "there" | "their"
-            | "about" | "into" | "tell"
+        "what"
+            | "which"
+            | "does"
+            | "how"
+            | "why"
+            | "when"
+            | "with"
+            | "from"
+            | "that"
+            | "this"
+            | "these"
+            | "those"
+            | "were"
+            | "have"
+            | "could"
+            | "should"
+            | "would"
+            | "there"
+            | "their"
+            | "about"
+            | "into"
+            | "tell"
     )
 }
 
@@ -137,10 +158,7 @@ fn heuristic_overlap(query: &str, instructions: &str) -> f64 {
 
 #[async_trait]
 impl DecisionClient for FixtureDecisionClient {
-    async fn decide(
-        &self,
-        request: DecisionRequest,
-    ) -> Result<DecisionResponse, DecisionError> {
+    async fn decide(&self, request: DecisionRequest) -> Result<DecisionResponse, DecisionError> {
         let mut answers = BTreeMap::new();
         for (key, q) in &request.questions {
             match q {
@@ -170,7 +188,11 @@ impl DecisionClient for FixtureDecisionClient {
                             for k in choices.keys() {
                                 probs.insert(
                                     k.clone(),
-                                    if *k == selected { p } else { (1.0 - p) / (choices.len().max(1) - 1).max(1) as f64 },
+                                    if *k == selected {
+                                        p
+                                    } else {
+                                        (1.0 - p) / (choices.len().max(1) - 1).max(1) as f64
+                                    },
                                 );
                             }
                             Answer::Choice {

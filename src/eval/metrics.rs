@@ -46,7 +46,10 @@ pub fn evidence_precision(expected: &[String], got_sources: &[String]) -> f64 {
         return 0.0;
     }
     let exp: HashSet<&str> = expected.iter().map(|s| s.as_str()).collect();
-    let hits = got_sources.iter().filter(|g| exp.contains(g.as_str())).count();
+    let hits = got_sources
+        .iter()
+        .filter(|g| exp.contains(g.as_str()))
+        .count();
     hits as f64 / got_sources.len() as f64
 }
 

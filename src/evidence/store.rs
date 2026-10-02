@@ -37,8 +37,7 @@ impl MemoryEvidenceStore {
 
     pub fn load_dir(dir: &std::path::Path) -> Result<Self, EvidenceError> {
         let mut store = Self::new();
-        let entries = std::fs::read_dir(dir)
-            .map_err(|e| EvidenceError::Store(e.to_string()))?;
+        let entries = std::fs::read_dir(dir).map_err(|e| EvidenceError::Store(e.to_string()))?;
         for entry in entries.flatten() {
             let path = entry.path();
             if path.extension().and_then(|s| s.to_str()) != Some("md") {
@@ -98,11 +97,7 @@ impl MemoryEvidenceStore {
             })
             .filter(|(_, s)| *s > 0.0)
             .collect();
-        scored.sort_by(|a, b| {
-            b.1.partial_cmp(&a.1)
-                .unwrap()
-                .then_with(|| a.0.cmp(&b.0))
-        });
+        scored.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap().then_with(|| a.0.cmp(&b.0)));
         scored.truncate(top_k);
         scored
     }
@@ -114,11 +109,50 @@ impl Default for MemoryEvidenceStore {
     }
 }
 
+fn stem(t: &str) -> String {
+    if t.ends_with("ies") && t.len() > 4 {
+        return format!("{}y", &t[..t.len() - 3]);
+    }
+    if t.ends_with('s') && t.len() > 3 && !t.ends_with("ss") {
+        return t[..t.len() - 1].to_string();
+    }
+    t.to_string()
+}
+
+fn is_stop(t: &str) -> bool {
+    matches!(
+        t,
+        "what"
+            | "which"
+            | "does"
+            | "how"
+            | "why"
+            | "when"
+            | "with"
+            | "from"
+            | "that"
+            | "this"
+            | "these"
+            | "those"
+            | "were"
+            | "have"
+            | "could"
+            | "should"
+            | "would"
+            | "there"
+            | "their"
+            | "about"
+            | "into"
+            | "tell"
+    )
+}
+
 fn tokenize(s: &str) -> Vec<String> {
     s.to_lowercase()
         .split(|c: char| !c.is_alphanumeric())
-        .filter(|t| t.len() > 2)
-        .map(|t| t.to_string())
+        .filter(|t| t.len() > 3)
+        .map(stem)
+        .filter(|t| !is_stop(t))
         .collect()
 }
 

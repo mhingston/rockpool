@@ -53,8 +53,9 @@ citations:
 ```
 
 Every query also renders its traversal trace — which seeds fired, every
-candidate edge with its graph prior, semantic score and ACCEPT/REVIEW/REJECT
-verdict — so retrieval decisions are inspectable, not opaque:
+candidate edge with its graph prior, semantic score, first-class verdict
+(`ACCEPT` / `ACCEPT(fallback)` / `REVIEW` / `REJECT` / `UNAVAILABLE`) and the
+complete seed → evidence path — so retrieval decisions are inspectable:
 
 ```bash
 cargo run -- query "What policies affect renewal pricing?"
@@ -81,8 +82,8 @@ cargo run -- query "What policies affect renewal pricing?"
 |---|---|
 | `query "<q>" [--mode hybrid\|semantic\|deterministic] [--live] [--record f]` | Retrieve evidence with a full traversal trace |
 | `answer "<q>" [--live] [--answer-live]` | Retrieve, then synthesize a cited answer (abstains when evidence is thin) |
-| `eval [--live] [--json] [--cases f]` | Compare lexical / deterministic-graph / semantic / hybrid retrieval |
-| `answer-eval [--live] [--json]` | Citation precision, expected-evidence coverage, abstention behaviour |
+| `eval [--live] [--json] [--cases f]` | Compare substring-lexical / BM25 / deterministic-graph / semantic / hybrid (+ BM25 curves) |
+| `answer-eval [--live] [--json]` | Citation validity (resolvability), expected-evidence coverage, abstention behaviour |
 | `construct <source-id> [--live]` | Propose → validate → apply graph mutations (in-memory demo) |
 | `decide --state s --instructions i` | Single bounded judgement against the live endpoint |
 
@@ -93,18 +94,30 @@ additionally use any OpenAI-compatible chat endpoint via `ANSWER_*`.
 
 ## How well does it work?
 
-30 development + 8 held-out cases over a 61-node / 102-edge / 14-source
-fixture (live Jev backend):
+30 development + 8 held-out cases over corpus A (61 nodes / 102 edges /
+14 sources), plus 10 cases over corpus B (40 nodes / 64 edges / 6 sources,
+disjoint harbor-domain vocabulary with genuine multi-hop and high-fan-out
+cases). Live Jev backend unless noted:
 
-| system | evidence recall (dev/holdout) | evidence precision | nodes examined |
+| system | ev recall (A-dev / A-hold / B) | ev precision | nodes examined |
 |---|---|---|---|
-| lexical | 0.967 / 1.000 | 0.25 / 0.23 | 3.9 / 4.2 |
-| deterministic graph | 1.000 / 0.875 | 0.34 / 0.48 | 8.7 / 4.1 |
-| semantic + graph priors | **1.000 / 0.875** | **0.56 / 0.62** | **5.2 / 2.5** |
+| substring lexical | 0.967 / 1.000 / 0.900 | 0.43 / 0.63 / 0.45 | 2.7 / 1.9 / 1.7 |
+| BM25 (Tantivy) | 0.967 / 1.000 / 0.900 | 0.24 / 0.23 / 0.22 | 4.0 / 4.1 / 3.5 |
+| deterministic graph | 1.000 / 0.875 / 0.950 | 0.34 / 0.48 / 0.49 | 8.7 / 4.1 / 9.9 |
+| semantic + graph priors | **1.000 / 0.875 / 0.950** | **0.57 / 0.62 / 0.68** | **5.1 / 2.8 / 3.3** |
 
-Answers: citation precision 1.0, expected-evidence coverage 30/30, correct
-abstention on unanswerable queries. Mean live retrieval latency ≈ 1.3 s over
-~6 small decision calls. Full analysis, per-hypothesis verdicts and
+Read honestly: on shared-vocabulary queries BM25 reaches equal or better
+recall — the graph's edge is precision (≈2.4× BM25) at less exploration.
+The topology argument rests on targeted cases, not averages: corpus-B b02
+(both lexical baselines 0.0 → graph 1.0, seed carries no evidence) and b06
+(prior-ranked truncation keeps the protocol where uniform truncation drops
+it). The holdout shares corpus A's generator, so treat it as tuning
+protection, not an independent corpus.
+
+Answers: citation validity 1.0 (every cited ID resolves to supplied
+evidence — resolvability, not semantic support), expected-evidence coverage
+30/30, correct abstention on unanswerable queries. Mean live retrieval
+latency ≈ 1.1 s over ~5 small decision calls. Full analysis, verdicts and
 limitations: [`docs/EVALUATION.md`](docs/EVALUATION.md).
 
 ## Project structure
@@ -120,9 +133,12 @@ src/
                client with Rust-side citation grounding
   construct/   proposal → resolution → validation-gate → policy-gated apply
   evidence/    EvidenceStore trait + checked-in fixture adapter
-  eval/        labelled cases, retrieval + answer metrics, four-way runner
-fixtures/      graph, 14 sources, 30 dev + 8 holdout cases (regenerate:
-               python3 tools/generate_fixture.py)
+  eval/        labelled cases, retrieval + answer metrics, BM25 baseline,
+               five-way runner with budget curves
+fixtures/      corpus A: graph, 14 sources, 30 dev + 8 holdout cases
+               (regenerate: python3 tools/generate_fixture.py)
+               corpus_b/: 40-node harbor domain, 10 cases incl. multi-hop +
+               high-fan-out (regenerate: python3 tools/generate_corpus_b.py)
 ```
 
 ## Status and scope

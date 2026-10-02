@@ -1,4 +1,4 @@
-use super::model::{Edge, EdgeKind, FixtureEdge, GraphFixture, Node, NodeId};
+use super::model::{Edge, EdgeKind, EvidenceRef, FixtureEdge, GraphFixture, Node, NodeId};
 use petgraph::stable_graph::{NodeIndex, StableDiGraph};
 use petgraph::visit::EdgeRef;
 use petgraph::Direction;
@@ -87,10 +87,7 @@ impl KnowledgeGraph {
         self.index.get(id).map(|i| &self.graph[*i])
     }
 
-    pub fn node_index(
-        &self,
-        id: &str,
-    ) -> Option<NodeIndex> {
+    pub fn node_index(&self, id: &str) -> Option<NodeIndex> {
         self.index.get(id).copied()
     }
 
@@ -98,11 +95,12 @@ impl KnowledgeGraph {
         &self.graph[idx].id
     }
 
-    /// Outgoing neighbours with edge payloads (directed traversal).
+    /// Outgoing neighbours with edge payloads (directed traversal),
+    /// including edge-level evidence so retrieval can consume it.
     pub fn out_neighbours(
         &self,
         id: &str,
-    ) -> Vec<(String, EdgeKind, Option<f32>)> {
+    ) -> Vec<(String, EdgeKind, Option<f32>, Vec<EvidenceRef>)> {
         let Some(idx) = self.node_index(id) else {
             return vec![];
         };
@@ -110,7 +108,12 @@ impl KnowledgeGraph {
             .edges_directed(idx, Direction::Outgoing)
             .map(|e| {
                 let target = self.graph[e.target()].id.clone();
-                (target, e.weight().kind, e.weight().confidence)
+                (
+                    target,
+                    e.weight().kind,
+                    e.weight().confidence,
+                    e.weight().evidence.clone(),
+                )
             })
             .collect()
     }
