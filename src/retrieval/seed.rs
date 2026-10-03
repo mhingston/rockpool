@@ -196,7 +196,7 @@ mod tests {
 
     #[test]
     fn duplicate_query_terms_do_not_change_weighting() {
-        let nodes = vec![
+        let nodes = [
             node("target", "Meridian wreck", "specific wreck", &["meridian"]),
             node("generic", "Wreck marker", "generic wreck marker", &[]),
         ];
