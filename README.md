@@ -148,11 +148,18 @@ threshold tuning.
 
 ### Scale benchmark
 
-`cargo bench --bench scale` exercises cold versus cached PageRank plus seed
-resolution at 1k, 10k and 50k nodes and a separate fan-out-25 graph. Retrieval
-uses an `Arc`-backed PageRank cache keyed by configuration; node/edge mutation
-invalidates it automatically. CI runs this benchmark so performance regressions
-remain visible without making timing thresholds correctness gates.
+`cargo bench --bench scale` exercises cold versus cached PageRank, seed
+resolution, and the full deterministic retrieval path at 1k, 10k and 50k nodes
+plus a separate fan-out-25 graph. Cached PageRank is averaged over 100,000 hot
+calls so sub-microsecond timings are not dominated by timer resolution; seed
+resolution and deterministic retrieval report p50/p95 over 101 warmed samples.
+Cold PageRank remains a single informational build measurement because it is
+the deliberately expensive O(iterations × (V + E)) path.
+
+Retrieval uses an `Arc`-backed PageRank cache keyed by configuration;
+node/edge mutation invalidates it automatically. CI runs the benchmark so
+performance regressions remain visible without making timing thresholds
+correctness gates.
 
 ## Project structure
 
