@@ -11,7 +11,7 @@ use std::hint::black_box;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 
-const TIMED_SAMPLES: usize = 11;
+const TIMED_SAMPLES: usize = 41;
 const CACHED_PAGERANK_ITERS: usize = 100_000;
 
 fn synthetic_graph(nodes: usize, fanout: usize) -> KnowledgeGraph {
@@ -106,6 +106,12 @@ fn run_case(runtime: &tokio::runtime::Runtime, nodes: usize, fanout: usize) {
     assert!(Arc::ptr_eq(&cold, &cached));
 
     let all = kg.all_nodes();
+
+    // Warm seed resolution separately so allocator/cache setup is not counted
+    // as the first timed observation.
+    let seed_warm = resolve_seeds(black_box(query), black_box(&all), 3);
+    black_box(seed_warm);
+
     let seed_samples = time_samples(|| {
         let seeds = resolve_seeds(black_box(query), black_box(&all), 3);
         black_box(seeds);
