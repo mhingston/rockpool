@@ -2,7 +2,8 @@ use super::model::{Edge, EdgeKind, EvidenceRef, FixtureEdge, GraphFixture, Node,
 use petgraph::stable_graph::{NodeIndex, StableDiGraph};
 use petgraph::visit::EdgeRef;
 use petgraph::Direction;
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
+use std::sync::{Arc, RwLock};
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -15,9 +16,16 @@ pub enum GraphError {
     Load(String),
 }
 
+struct PageRankCache {
+    damping_bits: u32,
+    iterations: usize,
+    ranks: Arc<BTreeMap<String, f32>>,
+}
+
 pub struct KnowledgeGraph {
     pub graph: StableDiGraph<Node, Edge>,
     index: HashMap<NodeId, NodeIndex>,
+    pagerank_cache: RwLock<Option<PageRankCache>>,
 }
 
 impl KnowledgeGraph {
@@ -25,6 +33,7 @@ impl KnowledgeGraph {
         Self {
             graph: StableDiGraph::new(),
             index: HashMap::new(),
+            pagerank_cache: RwLock::new(None),
         }
     }
 
@@ -45,12 +54,51 @@ impl KnowledgeGraph {
         Self::from_fixture(fixture)
     }
 
+    fn invalidate_pagerank_cache(&mut self) {
+        *self
+            .pagerank_cache
+            .get_mut()
+            .expect("PageRank cache lock poisoned") = None;
+    }
+
+    pub(crate) fn cached_pagerank(
+        &self,
+        damping: f32,
+        iterations: usize,
+    ) -> Option<Arc<BTreeMap<String, f32>>> {
+        let cache = self.pagerank_cache.read().ok()?;
+        match cache.as_ref() {
+            Some(c)
+                if c.damping_bits == damping.to_bits() && c.iterations == iterations =>
+            {
+                Some(Arc::clone(&c.ranks))
+            }
+            _ => None,
+        }
+    }
+
+    pub(crate) fn store_pagerank(
+        &self,
+        damping: f32,
+        iterations: usize,
+        ranks: Arc<BTreeMap<String, f32>>,
+    ) {
+        if let Ok(mut cache) = self.pagerank_cache.write() {
+            *cache = Some(PageRankCache {
+                damping_bits: damping.to_bits(),
+                iterations,
+                ranks,
+            });
+        }
+    }
+
     pub fn add_node(&mut self, node: Node) -> Result<(), GraphError> {
         if self.index.contains_key(&node.id) {
             return Err(GraphError::DuplicateNode(node.id));
         }
         let idx = self.graph.add_node(node.clone());
         self.index.insert(node.id, idx);
+        self.invalidate_pagerank_cache();
         Ok(())
     }
 
@@ -72,6 +120,7 @@ impl KnowledgeGraph {
                 confidence: e.confidence,
             },
         );
+        self.invalidate_pagerank_cache();
         Ok(())
     }
 
