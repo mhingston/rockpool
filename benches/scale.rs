@@ -59,11 +59,7 @@ fn run_case(nodes: usize, fanout: usize) {
 
     let all = kg.all_nodes();
     let seed_start = Instant::now();
-    let seeds = resolve_seeds(
-        "Which rare needle routing policy applies?",
-        &all,
-        3,
-    );
+    let seeds = resolve_seeds("Which rare needle routing policy applies?", &all, 3);
     let seed_elapsed = seed_start.elapsed();
 
     println!(
