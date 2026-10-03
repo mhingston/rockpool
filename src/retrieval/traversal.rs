@@ -3,7 +3,7 @@ use crate::decision::types::{DecisionRecord, DecisionRequest, Question};
 use crate::evidence::store::EvidenceStore;
 use crate::evidence::types::Evidence;
 use crate::graph::model::{EdgeKind, EvidenceRef};
-use crate::graph::rank::pagerank;
+use crate::graph::rank::pagerank_shared;
 use crate::graph::store::KnowledgeGraph;
 use crate::retrieval::candidates::{graph_prior, Candidate, CandidateFilter, Verdict};
 use crate::retrieval::frontier::rank_frontier;
@@ -37,7 +37,7 @@ where
     D: DecisionClient,
     E: EvidenceStore,
 {
-    let pr = pagerank(kg, 0.85, 50);
+    let pr = pagerank_shared(kg, 0.85, 50);
     let all: Vec<_> = kg.all_nodes();
     let seeds = resolve_seeds(query, &all, 3);
     let mut trace = Trace {
