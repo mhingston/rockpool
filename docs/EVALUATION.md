@@ -22,6 +22,37 @@ Two semantic backends are reported:
   (`DECISION_ENDPOINT`, `DECISION_MODEL=jev-1.13.0` config-only,
   Bearer from configured key). Full per-case JSON: `docs/report_live_dev.json`.
 
+## Post-report deterministic hardening benchmark
+
+The checked-in live reports below were recorded on 2026-10-02 before the
+seed-ranking hardening in this PR. They remain useful as the live-model
+baseline; they have not been relabelled as post-change results.
+
+Failure analysis of corpus-B `b07` found 28 tied/near-tied seed candidates.
+Lexicographic tie-breaking placed `meridian-wreck` at rank 26 and
+`wreck-buoy-protocol` at rank 27, so top-3 made one labelled passage
+unreachable before semantic routing. Seed resolution now:
+
+- removes stop words before stemming;
+- deduplicates query tokens;
+- uses IDF-weighted metadata overlap so rare terms outrank generic terms.
+
+Frozen-fixture seed replay (top-3):
+
+| split | expected-entity recall@3 before | after | evidence reachable within hop budget before | after |
+|---|---:|---:|---:|---:|
+| A dev | 0.727 | **0.841** | 30/30 | 30/30 |
+| A holdout | 0.778 | **0.889** | 7/8 | 7/8 |
+| B | 0.500 | **0.900** | 9/10 | **10/10** |
+
+This metric isolates seed resolution; it is not a substitute for rerunning the
+live Jev retrieval evaluation. The remaining holdout miss (`h03`) has no
+lexical bridge in node metadata.
+
+Retrieval now also uses an `Arc`-backed PageRank cache keyed by
+(damping, iterations), invalidated on node/edge mutation. Run
+`cargo bench --bench scale` for the dependency-free size/fan-out benchmark.
+
 ## Headline numbers (live model)
 
 ### Development (30 cases, live)
