@@ -94,6 +94,8 @@ additionally use any OpenAI-compatible chat endpoint via `ANSWER_*`.
 
 ## How well does it work?
 
+### Recorded live retrieval evaluation (2026-10-02)
+
 30 development + 8 held-out cases over corpus A (61 nodes / 102 edges /
 14 sources), plus 10 cases over corpus B (40 nodes / 64 edges / 6 sources,
 disjoint harbor-domain vocabulary with genuine multi-hop and high-fan-out
@@ -117,8 +119,40 @@ protection, not an independent corpus.
 Answers: citation validity 1.0 (every cited ID resolves to supplied
 evidence — resolvability, not semantic support), expected-evidence coverage
 30/30, correct abstention on unanswerable queries. Mean live retrieval
-latency ≈ 1.1 s over ~5 small decision calls. Full analysis, verdicts and
-limitations: [`docs/EVALUATION.md`](docs/EVALUATION.md).
+latency ≈ 1.1 s over ~5 small decision calls. These checked-in Jev reports
+predate the seed-ranking hardening below; treat them as a recorded baseline,
+not a post-change live rerun. Full analysis, verdicts and limitations:
+[`docs/EVALUATION.md`](docs/EVALUATION.md).
+
+### Seed-resolution robustness benchmark
+
+A failure analysis of corpus-B case `b07` found that generic wreck terms
+created 28 tied/near-tied seed candidates; lexicographic tie-breaking ranked
+`meridian-wreck` 26th and `wreck-buoy-protocol` 27th, outside top-3 before
+semantic routing began. Seed resolution now removes stop words before
+stemming, deduplicates query tokens, and weights overlap by inverse document
+frequency so rarer terms carry more signal.
+
+Offline replay over the frozen labelled fixtures (top-3 seeds):
+
+| split | expected-entity recall@3 before | after | labelled evidence reachable within hop budget before | after |
+|---|---:|---:|---:|---:|
+| corpus A dev | 0.727 | **0.841** | 30/30 | 30/30 |
+| corpus A holdout | 0.778 | **0.889** | 7/8 | 7/8 |
+| corpus B | 0.500 | **0.900** | 9/10 | **10/10** |
+
+This is a deterministic seed-stage benchmark, not a replacement for the live
+retrieval evaluation. The remaining holdout miss (`h03`) has no lexical bridge
+at all, which is a useful boundary rather than something to hide with further
+threshold tuning.
+
+### Scale benchmark
+
+`cargo bench --bench scale` exercises cold versus cached PageRank plus seed
+resolution at 1k, 10k and 50k nodes and a separate fan-out-25 graph. Retrieval
+uses an `Arc`-backed PageRank cache keyed by configuration; node/edge mutation
+invalidates it automatically. CI runs this benchmark so performance regressions
+remain visible without making timing thresholds correctness gates.
 
 ## Project structure
 
@@ -145,8 +179,8 @@ fixtures/      corpus A: graph, 14 sources, 30 dev + 8 holdout cases
 
 Implemented: deterministic retrieval, generic decision client, semantic
 routing, evidence sufficiency, cited answer generation, and a construction
-pipeline scaffold — all behind the boundaries above, all tested
-(`cargo test`: 12 tests). Deliberately **not** included: embeddings, vector
+pipeline scaffold — all behind the boundaries above, with unit/integration tests
+and a dependency-free scale benchmark. Deliberately **not** included: embeddings, vector
 search, community detection, graph databases, agents, MCP, UIs. See
 [`docs/EVALUATION.md`](docs/EVALUATION.md) for what was validated, what
 wasn't (e.g. graph-prior efficiency at scale), and the recommended next steps.
