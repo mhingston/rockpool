@@ -11,7 +11,7 @@ use std::hint::black_box;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 
-const TIMED_SAMPLES: usize = 41;
+const TIMED_SAMPLES: usize = 101;
 const CACHED_PAGERANK_ITERS: usize = 100_000;
 
 fn synthetic_graph(nodes: usize, fanout: usize) -> KnowledgeGraph {
