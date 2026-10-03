@@ -23,7 +23,7 @@ struct PageRankCache {
 }
 
 pub struct KnowledgeGraph {
-    pub graph: StableDiGraph<Node, Edge>,
+    graph: StableDiGraph<Node, Edge>,
     index: HashMap<NodeId, NodeIndex>,
     pagerank_cache: RwLock<Option<PageRankCache>>,
 }
