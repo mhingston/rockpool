@@ -188,7 +188,10 @@ mod tests {
 
     #[test]
     fn removes_stop_words_before_stemming() {
-        assert_eq!(tokenize("What does the policy require?"), vec!["policy", "require"]);
+        assert_eq!(
+            tokenize("What does the policy require?"),
+            vec!["policy", "require"]
+        );
     }
 
     #[test]
