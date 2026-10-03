@@ -68,9 +68,7 @@ impl KnowledgeGraph {
     ) -> Option<Arc<BTreeMap<String, f32>>> {
         let cache = self.pagerank_cache.read().ok()?;
         match cache.as_ref() {
-            Some(c)
-                if c.damping_bits == damping.to_bits() && c.iterations == iterations =>
-            {
+            Some(c) if c.damping_bits == damping.to_bits() && c.iterations == iterations => {
                 Some(Arc::clone(&c.ranks))
             }
             _ => None,
