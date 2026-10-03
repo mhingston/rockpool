@@ -197,14 +197,29 @@ mod tests {
     #[test]
     fn duplicate_query_terms_do_not_change_weighting() {
         let nodes = [
-            node("target", "Meridian wreck", "specific wreck", &["meridian"]),
-            node("generic", "Wreck marker", "generic wreck marker", &[]),
+            node(
+                "target",
+                "Coaster Meridian",
+                "Specific wreck location.",
+                &["meridian"],
+            ),
+            node("generic", "Wreck marker", "Generic navigation marker.", &[]),
         ];
         let refs: Vec<&Node> = nodes.iter().collect();
         let once = resolve_seeds("Meridian wreck", &refs, 2);
         let repeated = resolve_seeds("Meridian wreck wreck", &refs, 2);
-        assert_eq!(once[0].node_id, "target");
-        assert_eq!(repeated[0].node_id, "target");
+
+        let once_target = once.iter().find(|s| s.node_id == "target").unwrap();
+        let repeated_target = repeated.iter().find(|s| s.node_id == "target").unwrap();
+
+        assert!(
+            (once_target.score - repeated_target.score).abs() < f64::EPSILON,
+            "repeating a query token changed weighted overlap: {} vs {}",
+            once_target.score,
+            repeated_target.score
+        );
+        assert!(once_target.reason.starts_with("idf_overlap:"));
+        assert!(repeated_target.reason.starts_with("idf_overlap:"));
     }
 
     #[test]
