@@ -152,7 +152,7 @@ threshold tuning.
 resolution, and the full deterministic retrieval path at 1k, 10k and 50k nodes
 plus a separate fan-out-25 graph. Cached PageRank is averaged over 100,000 hot
 calls so sub-microsecond timings are not dominated by timer resolution; seed
-resolution and deterministic retrieval report p50/p95 over 11 warmed samples.
+resolution and deterministic retrieval report p50/p95 over 41 warmed samples.
 Cold PageRank remains a single informational build measurement because it is
 the deliberately expensive O(iterations × (V + E)) path.
 
